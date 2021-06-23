@@ -1,8 +1,6 @@
-package idv.tfp10101.group_mysql_bowen_android.merch;
+package idv.tfp10101.iamin.merch;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Merch implements Serializable {
     private int merchId;

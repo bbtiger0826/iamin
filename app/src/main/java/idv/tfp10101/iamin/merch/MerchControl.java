@@ -1,4 +1,4 @@
-package idv.tfp10101.group_mysql_bowen_android.merch;
+package idv.tfp10101.iamin.merch;
 
 import android.content.Context;
 import android.util.Base64;
@@ -9,14 +9,12 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
-import org.json.JSONObject;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import idv.tfp10101.group_mysql_bowen_android.R;
-import idv.tfp10101.group_mysql_bowen_android.network.RemoteAccess;
+import idv.tfp10101.iamin.R;
+import idv.tfp10101.iamin.network.RemoteAccess;
 
 /**
  * 商品控制

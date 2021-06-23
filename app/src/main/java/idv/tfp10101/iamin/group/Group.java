@@ -1,10 +1,10 @@
-package idv.tfp10101.group_mysql_bowen_android.group;
+package idv.tfp10101.iamin.group;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
-import idv.tfp10101.group_mysql_bowen_android.merch.Merch;
+import idv.tfp10101.iamin.merch.Merch;
 
 public class Group implements Serializable {
     private int groupId;

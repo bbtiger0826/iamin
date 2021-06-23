@@ -1,2 +1,7 @@
-package idv.tfp10101.iamin.Data;public class HomeDataControl {
+package idv.tfp10101.iamin.Data;
+
+import idv.tfp10101.iamin.group.GroupControl;
+
+public class HomeDataControl {
+
 }

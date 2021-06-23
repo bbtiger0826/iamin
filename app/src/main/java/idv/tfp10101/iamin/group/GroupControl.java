@@ -1,11 +1,9 @@
-package idv.tfp10101.group_mysql_bowen_android.group;
+package idv.tfp10101.iamin.group;
 
-import android.app.Activity;
 import android.content.Context;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
@@ -13,9 +11,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import idv.tfp10101.group_mysql_bowen_android.R;
-import idv.tfp10101.group_mysql_bowen_android.merch.Merch;
-import idv.tfp10101.group_mysql_bowen_android.network.RemoteAccess;
+import idv.tfp10101.iamin.R;
+import idv.tfp10101.iamin.network.RemoteAccess;
 
 /**
  * 賣家團購單控制
