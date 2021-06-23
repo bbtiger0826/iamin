@@ -23,8 +23,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import idv.tfp10101.iamin.Home.HomeControl;
-import idv.tfp10101.iamin.Home.HomeGroup;
+
 
 
 public class HomeFragment extends Fragment {
@@ -33,7 +32,7 @@ public class HomeFragment extends Fragment {
     private BottomNavigationView bottomNavigationView;
     private ExecutorService executor;
     private RecyclerView recyclerViewGroup;
-    private List<HomeGroup> localHomeGroups;
+
     private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
@@ -85,7 +84,7 @@ public class HomeFragment extends Fragment {
                 return false;
             }
         });
-        HomeControl.getAllGroup(activity);
+
     }
 
     private void findView(View view) {
