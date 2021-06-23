@@ -1,64 +1,93 @@
 package idv.tfp10101.iamin;
 
+import android.app.Activity;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+
+
 public class HomeFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public HomeFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private Activity activity;
+    private View view;
+    private BottomNavigationView bottomNavigationView;
+    private ExecutorService executor;
+    private RecyclerView recyclerViewGroup;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
+        // 需要開啟多個執行緒取得各景點圖片，使用執行緒池功能
+        int numProcs = Runtime.getRuntime().availableProcessors();
+        Log.d("TAG", "JVM可用的處理器數量: " + numProcs);
+        // 建立固定量的執行緒放入執行緒池內並重複利用它們來執行任務
+        executor = Executors.newFixedThreadPool(numProcs);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        // 取得Activity參考
+        activity = getActivity();
+        activity.setTitle("首頁");
+        view = inflater.inflate(R.layout.fragment_home, container, false);
+        return view;
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        findView(view);
+
+        //        bottomNavigationView.getMenu().setGroupCheckable(0,false,false);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            //bottombar監聽事件
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.food:
+                        Toast.makeText(activity, "美食", Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.theerc:
+                        Toast.makeText(activity, "3C", Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.life:
+                        Toast.makeText(activity, "生活用品", Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.other:
+                        Toast.makeText(activity, "其他", Toast.LENGTH_SHORT).show();
+                        return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    private void findView(View view) {
+        bottomNavigationView = view.findViewById(R.id.nv_bar);
+        recyclerViewGroup = view.findViewById(R.id.rv_groups);
+        recyclerViewGroup.setLayoutManager(new LinearLayoutManager(activity));
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+    }
+
 }
