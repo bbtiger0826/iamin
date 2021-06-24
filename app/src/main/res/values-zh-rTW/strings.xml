@@ -29,4 +29,6 @@
     <string name="textPaymentMethod">收款方式</string>
     <string name="textCreditCard">信用卡</string>
     <string name="textFaceToFace">當面交易</string>
+    <string name="textHome">首頁</string>
+    <string name="textChat">聊天</string>
 </resources>
