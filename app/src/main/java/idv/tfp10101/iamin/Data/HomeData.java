@@ -6,6 +6,7 @@ import java.util.List;
 import idv.tfp10101.iamin.merch.Merch;
 
 public class HomeData {
+
     private int groupId;
     private String name; //商品名稱
     private int price;//商品1價錢
