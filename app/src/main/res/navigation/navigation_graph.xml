@@ -10,4 +10,9 @@
         android:name="idv.tfp10101.iamin.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="idv.tfp10101.iamin.ChatFragment"
+        android:label="fragment_chat"
+        tools:layout="@layout/fragment_chat" />
 </navigation>
