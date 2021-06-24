@@ -18,6 +18,7 @@ import idv.tfp10101.iamin.network.RemoteAccess;
  * 賣家團購單控制
  */
 public class GroupControl {
+
     // Singleton
     private static List<Group> Groups;
     public static List<Group> getLocalGroup() {

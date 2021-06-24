@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="idv.tfp10101.iamin">
 
     <!-- 檢查網路 - 權限 -->
@@ -16,7 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Iamin"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        tools:targetApi="m">
 
         <!-- FileProvider相關設定，若最後要取得 照片原圖 或 圖片裁剪 才需要 -->
         <!-- authorities：自訂授權識別字串(要與getUriForFile的參數對應) -->

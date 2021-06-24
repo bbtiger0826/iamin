@@ -23,7 +23,11 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-
+import idv.tfp10101.iamin.Data.HomeDataControl;
+import idv.tfp10101.iamin.group.Group;
+import idv.tfp10101.iamin.group.GroupControl;
+import idv.tfp10101.iamin.merch.Merch;
+import idv.tfp10101.iamin.merch.MerchControl;
 
 
 public class HomeFragment extends Fragment {
@@ -32,7 +36,8 @@ public class HomeFragment extends Fragment {
     private BottomNavigationView bottomNavigationView;
     private ExecutorService executor;
     private RecyclerView recyclerViewGroup;
-
+    private List<Group> localGroups;
+    private List<Merch> localMerchs;
     private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
@@ -84,6 +89,16 @@ public class HomeFragment extends Fragment {
                 return false;
             }
         });
+        //呼叫
+        HomeDataControl.getAllHomeData(activity);
+
+
+//        MerchControl.getAllMerchByGroupId(activity,);
+//        localGroups = GroupControl.getLocalGroup();
+//        if (localGroups == null || localGroups.isEmpty()) {
+//            Toast.makeText(activity, R.string.textNoGroupsFound, Toast.LENGTH_SHORT).show();
+//        }
+
 
     }
 

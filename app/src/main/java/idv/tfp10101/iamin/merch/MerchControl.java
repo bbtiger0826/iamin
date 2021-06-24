@@ -187,4 +187,23 @@ public class MerchControl {
             return -1;
         }
     }
+
+    public static void getAllMerchByGroupId(Context context, int groupId) {
+        // 如果有網路，就進行 request
+        if (RemoteAccess.networkConnected(context)) {
+            // 網址 ＆ Action
+            String url = RemoteAccess.URL_SERVER + "Merch";
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("action", "getAllByGroupIdId");
+            jsonObject.addProperty("memberId", groupId);
+
+            // requst
+            String jsonString = RemoteAccess.getRometeData(url, new Gson().toJson(jsonObject));
+            /** 匿名內部類別實作TypeToken，抓取 泛型 在呼叫方法 */
+            Type listType = new TypeToken<List<Merch>>(){}.getType();
+            setLocalMerchs(new Gson().fromJson(jsonString, listType));
+        }else {
+            Toast.makeText(context, R.string.textNoNetwork, Toast.LENGTH_SHORT).show();
+        }
+    }
 }
