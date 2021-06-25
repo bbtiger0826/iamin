@@ -48,4 +48,6 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     // Ucrop
     implementation 'com.github.yalantis:ucrop:2.2.4'
+    //CircleImageView
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 }
