@@ -9,18 +9,21 @@ public class HomeData {
 
     private int groupId;
     private String name; //商品名稱
-    private int price;//商品1價錢
+    private List<Integer> price;//所有商品的價錢
     private Timestamp conditionTime; // 停單條件(時間)
     private int progress; //當前進度
     private int goal; // 目標
 
-    public HomeData(int groupId, String name, int price, int progress, int goal, Timestamp conditionTime) {
+    public HomeData(int groupId, String name,int progress, int goal, Timestamp conditionTime) {
         this.groupId = groupId;
         this.name = name;
-        this.price = price;
         this.conditionTime = conditionTime;
         this.progress = progress;
         this.goal = goal;
+    }
+
+    public HomeData(List<Integer> price) {
+        this.price = price;
     }
 
     public int getGroupId() {
@@ -39,11 +42,11 @@ public class HomeData {
         this.name = name;
     }
 
-    public int getPrice() {
+    public List<Integer> getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(List<Integer> price) {
         this.price = price;
     }
 
