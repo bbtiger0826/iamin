@@ -10,4 +10,8 @@
         android:id="@+id/chatFragment"
         android:icon="@drawable/chat"
         android:title="@string/textChat" />
+    <item
+        android:id="@+id/logInFragment"
+        android:icon="@drawable/icon_user"
+        android:title="Login（暫時）" />
 </menu>

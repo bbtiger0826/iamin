@@ -64,7 +64,8 @@ public class MainActivity extends AppCompatActivity {
             if (
 
                     navController.getCurrentDestination().getId() == R.id.homeFragment ||
-                            navController.getCurrentDestination().getId() == R.id.chatFragment
+                            navController.getCurrentDestination().getId() == R.id.chatFragment ||
+                            navController.getCurrentDestination().getId() == R.id.logInFragment
             ) {
                 bottomNavigationView.setVisibility(View.VISIBLE);
             } else {
