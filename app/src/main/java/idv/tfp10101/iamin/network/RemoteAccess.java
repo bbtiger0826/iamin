@@ -26,6 +26,8 @@ public class RemoteAccess {
      * @param requst
      * @return
      */
+
+    // getRometeData 字打錯了 getRemoteData才對
     public static String getRometeData(String url, String requst) {
         JsonCallable jsonCallable = new JsonCallable(url, requst);
         // callable 轉 Runnable (FutureTask<> -> Runnable的子代)
