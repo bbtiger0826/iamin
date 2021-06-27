@@ -18,7 +18,7 @@ import idv.tfp10101.iamin.Constants;
  */
 public class RemoteAccess {
     // 根網址
-    public static String URL_SERVER = "http://192.168.1.101:8080/iamin_JavaServlet/";
+    public static String URL_SERVER = "http://10.0.2.2:8080/iamin_JavaServlet/";
     //  test
     /**
      * (Json)抓取server資料
