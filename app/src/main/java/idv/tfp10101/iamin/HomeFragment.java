@@ -1,6 +1,7 @@
 package idv.tfp10101.iamin;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,19 +16,28 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import idv.tfp10101.iamin.Data.HomeData;
 import idv.tfp10101.iamin.Data.HomeDataControl;
 import idv.tfp10101.iamin.group.Group;
 import idv.tfp10101.iamin.group.GroupControl;
 import idv.tfp10101.iamin.merch.Merch;
 import idv.tfp10101.iamin.merch.MerchControl;
+
+import static android.media.CamcorderProfile.get;
 
 
 public class HomeFragment extends Fragment {
@@ -36,10 +46,8 @@ public class HomeFragment extends Fragment {
     private BottomNavigationView bottomNavigationView;
     private ExecutorService executor;
     private RecyclerView recyclerViewGroup;
-    private List<Group> localGroups;
-    private List<Merch> localMerchs;
+    private List<HomeData> localHomeDatas;
     private SwipeRefreshLayout swipeRefreshLayout;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,15 +99,36 @@ public class HomeFragment extends Fragment {
         });
         //呼叫
         HomeDataControl.getAllHomeData(activity);
+        localHomeDatas = HomeDataControl.getLocalHomeDatas();
+        if (localHomeDatas == null || localHomeDatas.isEmpty()) {
+            Toast.makeText(activity, R.string.textNoGroupsFound, Toast.LENGTH_SHORT).show();
+        }
 
 
-//        MerchControl.getAllMerchByGroupId(activity,);
-//        localGroups = GroupControl.getLocalGroup();
-//        if (localGroups == null || localGroups.isEmpty()) {
-//            Toast.makeText(activity, R.string.textNoGroupsFound, Toast.LENGTH_SHORT).show();
-//        }
+        showHomeData(localHomeDatas);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            //開啟動畫
+            swipeRefreshLayout.setRefreshing(true);
+            showHomeData(localHomeDatas);
+            swipeRefreshLayout.setRefreshing(false);
+        });
 
 
+    }
+
+    private void showHomeData(List<HomeData> localHomeDatas) {
+        /** RecyclerView */
+        // 檢查
+        HomeFragment.HomeAdapter groupAdapter = (HomeFragment.HomeAdapter) recyclerViewGroup.getAdapter();
+        if (groupAdapter == null) {
+            recyclerViewGroup.setAdapter(new HomeFragment.HomeAdapter(activity, localHomeDatas));
+            int px = (int) Constants.convertDpToPixel(1, activity); // 間距 8 dp
+            recyclerViewGroup.addItemDecoration(new Constants.SpacesItemDecoration("bottom", px));
+        }else{
+            // 資訊重新載入刷新
+            groupAdapter.setHomeDatas(localHomeDatas);
+            groupAdapter.notifyDataSetChanged();
+        }
     }
 
     private void findView(View view) {
@@ -107,6 +136,68 @@ public class HomeFragment extends Fragment {
         recyclerViewGroup = view.findViewById(R.id.rv_groups);
         recyclerViewGroup.setLayoutManager(new LinearLayoutManager(activity));
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+    }
+
+    private class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyHomeDataViewHolder>{
+        private List<HomeData> rsHomeDatas;
+        private LayoutInflater layoutInflater;
+
+        public HomeAdapter(Context context, List<HomeData> homedatas){
+            layoutInflater = LayoutInflater.from(context);
+            rsHomeDatas = homedatas;
+        }
+
+        public class MyHomeDataViewHolder extends RecyclerView.ViewHolder{
+            TextView txv_group_name,txv_group_price,txv_group_conditionTime,txv_progress;
+            ImageView imv_group;
+            ProgressBar pr_bar;
+            public MyHomeDataViewHolder(@NonNull View itemView) {
+                super(itemView);
+                txv_group_name = itemView.findViewById(R.id.txv_group_name);
+                txv_group_price = itemView.findViewById(R.id.txv_group_price);
+                txv_group_conditionTime = itemView.findViewById(R.id.txv_group_conditionTime);
+                txv_progress = itemView.findViewById(R.id.txv_progress);
+                pr_bar = itemView.findViewById(R.id.pr_bar);
+            }
+        }
+        public void setHomeDatas(List<HomeData> HomeDatas) {
+            rsHomeDatas = HomeDatas;
+        }
+
+        @NonNull
+        @Override
+        public MyHomeDataViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View itemView = layoutInflater.inflate(R.layout.item_view_group_buyer, parent, false);
+            return new HomeFragment.HomeAdapter.MyHomeDataViewHolder(itemView);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull HomeFragment.HomeAdapter.MyHomeDataViewHolder holder, int position) {
+        final HomeData rsHomeData = rsHomeDatas.get(position);
+        int GroupID = rsHomeData.getGroupId();
+        holder.txv_group_name.setText(rsHomeData.getName());
+        Timestamp ts = rsHomeData.getConditionTime();
+        DateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        holder.txv_group_conditionTime.setText("結單日期:"+"\n"+sdf.format(ts));
+        holder.pr_bar.setMax(rsHomeData.getGoal());
+        holder.pr_bar.setProgress(rsHomeData.getProgress());
+        holder.txv_progress.setText("("+String.valueOf(rsHomeData.getProgress())+"/"+String.valueOf(rsHomeData.getGoal())+")");
+            //發送商品價格請求
+            HomeDataControl.getAllGroupPrice(activity,GroupID);
+            List<HomeData> prices = HomeDataControl.getLocalHomeDatas();
+            List<Integer> price = prices.get(0).getPrice();
+            int min = price.get(0);
+            int max = price.get(price.size()-1);
+            holder.txv_group_price.setText("價格:"+String.valueOf(min)+"~"+String.valueOf(max));
+        holder.itemView.setOnClickListener(v ->{
+            Toast.makeText(activity, String.valueOf(GroupID), Toast.LENGTH_SHORT).show();
+        });
+        }
+
+        @Override
+        public int getItemCount() {
+            return rsHomeDatas == null ? 0 : rsHomeDatas.size();
+        }
     }
 
 }
