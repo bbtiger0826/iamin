@@ -94,7 +94,6 @@ public class LogInFragment extends Fragment {
             member.setEmail(email);
             member.setPassword(password);
             memberRemoteAccess(activity, member, "login");
-//            mysqlLogin(email, password);
         });
 
         //google登入
@@ -110,9 +109,9 @@ public class LogInFragment extends Fragment {
         });
 
         //註冊
-//        view.findViewById(R.id.btToSignUp).setOnClickListener(v -> {
-//            Navigation.findNavController(view).navigate(R.id.action_logInFragment_to_registerFragment);
-//        });
+        view.findViewById(R.id.btToSignUp).setOnClickListener(v -> {
+            Navigation.findNavController(view).navigate(R.id.action_logInFragment_to_signUpFragment);
+        });
 
 
     }
@@ -125,7 +124,7 @@ public class LogInFragment extends Fragment {
     private void fireBaseLogin() {
         GoogleSignInOptions options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 // 由google-services.json轉出
-                .requestIdToken("980612716510-2cqk21eo5729peqah5cc9hteru8uncop.apps.googleusercontent.com")
+                .requestIdToken(getString(R.string.default_web_client_id))
                 // 要求輸入email
                 .requestEmail()
                 .build();

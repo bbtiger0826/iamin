@@ -16,6 +16,7 @@ public class MemberControl {
     private static String TAG = "TAG_MemberControl";
 
     public static void memberRemoteAccess(Context context, Member member, String value) {
+        Log.d(TAG,member.getEmail());
         if (RemoteAccess.networkConnected(context)) {
             String url = RemoteAccess.URL_SERVER + "memberServelt";
             JsonObject jsonObject = new JsonObject();

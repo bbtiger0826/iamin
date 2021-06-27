@@ -29,7 +29,7 @@
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="idv.tfp10101.iamin.network.SignUpFragment"
+        android:name="idv.tfp10101.iamin.SignUpFragment"
         android:label="fragment_sign_up"
         tools:layout="@layout/fragment_sign_up" >
         <action

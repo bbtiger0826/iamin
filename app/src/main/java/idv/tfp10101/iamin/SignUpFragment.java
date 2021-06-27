@@ -1,4 +1,4 @@
-package idv.tfp10101.iamin.network;
+package idv.tfp10101.iamin;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -57,6 +57,8 @@ public class SignUpFragment extends Fragment {
         etNickname = view.findViewById(R.id.etRegisterNickname);
         etPhoneNumber = view.findViewById(R.id.etRegisterPhoneNumber);
 
+
+
         //to RegisterFragment
         view.findViewById(R.id.btSignUp).setOnClickListener(v ->{
 
@@ -84,7 +86,7 @@ public class SignUpFragment extends Fragment {
             createAccount(member);
 
             //移動到首頁
-            Navigation.findNavController(requireView()).navigate(R.id.action_signUpFragment_to_homeFragment);
+//            Navigation.findNavController(requireView()).navigate(R.id.action_signUpFragment_to_homeFragment);
         });
     }
 
@@ -96,39 +98,40 @@ public class SignUpFragment extends Fragment {
     private void createAccount(Member member) {
         Log.d(TAG, "createAccount:" + member.getEmail());
         auth.createUserWithEmailAndPassword(member.getEmail(), member.getPassword())
-                .addOnCompleteListener(requireActivity(), task -> {
+                .addOnCompleteListener(activity, task -> {
                     if (task.isSuccessful()) {
 
+                        Log.d(TAG, "createUserWithEmail:success");
                         //firebase創帳號
-                        crateMemberDataInfirebase(member);
-
-                        //Log.d(TAG, "createUserWithEmail:success");
+                        createMemberDataInfirebase(member);
 
                     } else {
-                        //Log.d(TAG, "createUserWithEmail:failure", task.getException());
+                        Log.d(TAG, "createUserWithEmail:failure", task.getException());
                         Toast.makeText(getContext(), "Authentication failed.", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
-    private void crateMemberDataInfirebase(Member user) {
-        db.collection("Users").document(auth.getCurrentUser().getUid()).set(user)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        String message = "Upload success with ID: " + auth.getCurrentUser().getUid();
-                        Log.d(TAG, message);
+    private void createMemberDataInfirebase(Member member) {
+            db.collection("Members").document(auth.getCurrentUser().getUid()).set(member)
+                    .addOnCompleteListener(task -> {
+                        Toast.makeText(activity, auth.getCurrentUser().getUid(), Toast.LENGTH_SHORT).show();
+                        if (task.isSuccessful()) {
+                            String message = "Upload success with ID: " + auth.getCurrentUser().getUid();
+                            Log.d(TAG, auth.getCurrentUser().getUid() + "<--------- UUID");
 
-                        //mysql創帳號
-                        member.setuUId(auth.getCurrentUser().getUid());
-                        memberRemoteAccess(activity , member, "register");
+                            //mysql創帳號
+                            member.setuUId(auth.getCurrentUser().getUid());
+                            Log.d(TAG, member.getuUId());
+                            memberRemoteAccess(activity, member, "signup");
 
-                    } else {
-                        String message = task.getException() == null ?
-                                "Upload failed" :
-                                task.getException().getMessage();
-                        Log.d(TAG, "message: " + message);
-                    }
-                });
+                        } else {
+                            String message = task.getException() == null ?
+                                    "Upload failed" :
+                                    task.getException().getMessage();
+                            Log.d(TAG, "message: " + message);
+                        }
+                    });
     }
 
     private boolean validateForm(String email, String password) {
