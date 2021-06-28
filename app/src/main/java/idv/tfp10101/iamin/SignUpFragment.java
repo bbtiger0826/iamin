@@ -23,6 +23,7 @@ import idv.tfp10101.iamin.R;
 import idv.tfp10101.iamin.member.Member;
 
 import static idv.tfp10101.iamin.member.MemberControl.memberRemoteAccess;
+import static idv.tfp10101.iamin.member.MemberControl.storeMemberIdSharedPreference;
 
 public class SignUpFragment extends Fragment {
     private final static String TAG = "TAG_RegisterFragment";
@@ -30,7 +31,6 @@ public class SignUpFragment extends Fragment {
     private FirebaseAuth auth;
     private EditText etEmail,etPassword,etNickname,etPhoneNumber;
     private Member member;
-    private FirebaseFirestore db;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,7 +38,6 @@ public class SignUpFragment extends Fragment {
         activity = getActivity();
         auth = FirebaseAuth.getInstance();
         member = new Member();
-        db = FirebaseFirestore.getInstance();
 
     }
 
@@ -68,7 +67,8 @@ public class SignUpFragment extends Fragment {
             String phoneNumber = etPhoneNumber.getText().toString().trim();
 
             //確定email 跟 password格式
-            if (!validateForm(email,password)){
+            if (email.trim().isEmpty() || password.trim().isEmpty()) {
+                Toast.makeText(activity, "Email/Password can't not be empty", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -86,7 +86,7 @@ public class SignUpFragment extends Fragment {
             createAccount(member);
 
             //移動到首頁
-//            Navigation.findNavController(requireView()).navigate(R.id.action_signUpFragment_to_homeFragment);
+            Navigation.findNavController(requireView()).navigate(R.id.action_signUpFragment_to_homeFragment);
         });
     }
 
@@ -101,9 +101,10 @@ public class SignUpFragment extends Fragment {
                 .addOnCompleteListener(activity, task -> {
                     if (task.isSuccessful()) {
 
-                        Log.d(TAG, "createUserWithEmail:success");
-                        //firebase創帳號
-                        createMemberDataInfirebase(member);
+                        //mysql創帳號
+                        member.setuUId(auth.getCurrentUser().getUid());
+                        String temp = memberRemoteAccess(activity , member, "signup");
+                        storeMemberIdSharedPreference(activity,temp);
 
                     } else {
                         Log.d(TAG, "createUserWithEmail:failure", task.getException());
@@ -111,38 +112,4 @@ public class SignUpFragment extends Fragment {
                     }
                 });
     }
-
-    private void createMemberDataInfirebase(Member member) {
-            db.collection("Members").document(auth.getCurrentUser().getUid()).set(member)
-                    .addOnCompleteListener(task -> {
-                        Toast.makeText(activity, auth.getCurrentUser().getUid(), Toast.LENGTH_SHORT).show();
-                        if (task.isSuccessful()) {
-                            String message = "Upload success with ID: " + auth.getCurrentUser().getUid();
-                            Log.d(TAG, auth.getCurrentUser().getUid() + "<--------- UUID");
-
-                            //mysql創帳號
-                            member.setuUId(auth.getCurrentUser().getUid());
-                            Log.d(TAG, member.getuUId());
-                            memberRemoteAccess(activity, member, "signup");
-
-                        } else {
-                            String message = task.getException() == null ?
-                                    "Upload failed" :
-                                    task.getException().getMessage();
-                            Log.d(TAG, "message: " + message);
-                        }
-                    });
-    }
-
-    private boolean validateForm(String email, String password) {
-        if (email.trim().isEmpty() || password.trim().isEmpty()) {
-            Toast.makeText(activity, "Email/Password can't not be empty", Toast.LENGTH_SHORT).show();
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-
-
 }

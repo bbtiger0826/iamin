@@ -44,6 +44,7 @@ import java.util.Objects;
 import idv.tfp10101.iamin.member.Member;
 
 import static idv.tfp10101.iamin.member.MemberControl.memberRemoteAccess;
+import static idv.tfp10101.iamin.member.MemberControl.storeMemberIdSharedPreference;
 
 public class LogInFragment extends Fragment {
     private final static String TAG = "TAG_LoginFragment";
@@ -119,6 +120,7 @@ public class LogInFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        LoginManager.getInstance().logOut();
     }
 
     private void fireBaseLogin() {
@@ -130,9 +132,6 @@ public class LogInFragment extends Fragment {
                 .build();
         client = GoogleSignIn.getClient(activity, options);
         callbackManager = CallbackManager.Factory.create();
-        if (auth.getCurrentUser() != null) {
-            // already signed in
-        }
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
@@ -144,7 +143,25 @@ public class LogInFragment extends Fragment {
                 .addOnCompleteListener(activity, task -> {
                     // 登入成功轉至下頁；失敗則顯示錯誤訊息
                     if (task.isSuccessful()) {
-                        Navigation.findNavController(textView)
+
+                        Toast.makeText(activity, "Goolge 登入成功", Toast.LENGTH_SHORT).show();
+
+                        //取得google登入的EMAIL firebase的auth.getCurrentUser().getEmail會return null
+                        GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(activity);
+                        String personEmail = "";
+                        if(signInAccount != null){
+                            personEmail = signInAccount.getEmail();
+                        }
+
+                        member.setEmail(personEmail);
+                        member.setPassword("google_Login");
+                        member.setuUId(auth.getCurrentUser().getUid());
+
+                        //用singup 因為要在mysql新增帳號資訊
+                        String temp = memberRemoteAccess(activity,member, "signup");
+                        storeMemberIdSharedPreference(activity,temp);
+
+                        Navigation.findNavController(getView())
                                 .navigate(R.id.action_logInFragment_to_homeFragment);
                     } else {
                         Exception exception = task.getException();
@@ -180,7 +197,7 @@ public class LogInFragment extends Fragment {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.d(TAG, "facebook:onSuccess:" + loginResult);
-                signInFirebase(loginResult.getAccessToken());
+                handleFacebookAccessToken(loginResult.getAccessToken());
             }
 
             @Override
@@ -202,7 +219,7 @@ public class LogInFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void signInFirebase(AccessToken token) {
+    private void handleFacebookAccessToken(AccessToken token) {
         Log.d(TAG, "signInFirebase: " + token);
 
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
@@ -210,20 +227,22 @@ public class LogInFragment extends Fragment {
                 .addOnCompleteListener(activity, task -> {
                     // 登入成功轉至下頁；失敗則顯示錯誤訊息
                     if (task.isSuccessful()) {
-                        Navigation.findNavController(textView)
+                        Navigation.findNavController(getView())
                                 .navigate(R.id.action_logInFragment_to_homeFragment);
                     } else {
-                        Exception exception = task.getException();
-                        String message = exception == null ? "Sign in fail." : exception.getMessage();
-                        Log.e(TAG, message);
-                        textView.setText(message);
+                        String error = task.getException().toString();
+                        Toast.makeText(activity, error + "<-----------facebook login", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, error);
+                        TextView debug = getView().findViewById(R.id.debugTv);
+                        debug.setText(error);
                     }
                 });
     }
 
     private void firebaseLogIn(String email, String password) {
         Log.d(TAG, "signIn:" + email);
-        if (!validateForm(email, password)) {
+        if (email.trim().isEmpty() || password.trim().isEmpty()) {
+            Toast.makeText(activity, "Email/Password can't not be empty", Toast.LENGTH_SHORT).show();
             return;
         }
         //firebse login
@@ -243,19 +262,4 @@ public class LogInFragment extends Fragment {
                     }
                 });
     }
-
-
-    private boolean validateForm(String email, String password) {
-        if (email.trim().isEmpty()) {
-            Toast.makeText(activity, "Email can't not be empty", Toast.LENGTH_SHORT).show();
-            return false;
-        } else if (password.trim().isEmpty()) {
-            Toast.makeText(activity, "Password can't not be empty", Toast.LENGTH_SHORT).show();
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-
 }
