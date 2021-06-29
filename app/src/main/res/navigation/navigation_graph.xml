@@ -9,7 +9,11 @@
         android:id="@+id/homeFragment"
         android:name="idv.tfp10101.iamin.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_merchbrowseFragment"
+            app:destination="@id/merchbrowseFragment" />
+    </fragment>
     <fragment
         android:id="@+id/chatFragment"
         android:name="idv.tfp10101.iamin.ChatFragment"
@@ -36,4 +40,9 @@
             android:id="@+id/action_signUpFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/merchbrowseFragment"
+        android:name="idv.tfp10101.iamin.MerchbrowseFragment"
+        android:label="fragment_merchbrowse"
+        tools:layout="@layout/fragment_merchbrowse" />
 </navigation>

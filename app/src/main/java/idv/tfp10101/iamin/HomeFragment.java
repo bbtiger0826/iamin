@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -189,9 +190,17 @@ public class HomeFragment extends Fragment {
             int min = price.get(0);
             int max = price.get(price.size()-1);
             holder.txv_group_price.setText("價格:"+String.valueOf(min)+"~"+String.valueOf(max));
-        holder.itemView.setOnClickListener(v ->{
-            Toast.makeText(activity, String.valueOf(GroupID), Toast.LENGTH_SHORT).show();
-        });
+
+            //設定點擊商品觸發
+            holder.itemView.setOnClickListener(v ->{
+                // Toast.makeText(activity, String.valueOf(id), Toast.LENGTH_SHORT).show();
+
+                Bundle bundle = new Bundle();
+                bundle.putInt("id",GroupID);
+                Navigation.findNavController(v).navigate(R.id.merchbrowseFragment,bundle);
+
+//
+            });
         }
 
         @Override
