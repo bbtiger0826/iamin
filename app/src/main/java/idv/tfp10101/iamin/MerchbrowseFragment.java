@@ -8,8 +8,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +23,9 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import idv.tfp10101.iamin.merch.Merch;
@@ -67,19 +72,21 @@ public class MerchbrowseFragment extends Fragment {
 
     private void findView(View view) {
         recyclerViewMerch = view.findViewById(R.id.recyclerViewMerch);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(activity){
-            @Override
-            public boolean canScrollHorizontally() {
-                return false;
-            }
-        };
-        recyclerViewMerch.setLayoutManager(linearLayoutManager);
+        recyclerViewMerch.setLayoutManager(new StaggeredGridLayoutManager(1,RecyclerView.HORIZONTAL));
+        PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
+        pagerSnapHelper.attachToRecyclerView(recyclerViewMerch);
 
         but_buy = view.findViewById(R.id.but_buy);
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(activity);
-        bottomSheetDialog.setContentView(R.layout.commodity_choose_bottomsheet);
         but_buy.setOnClickListener(v ->{
-            bottomSheetDialog.show();
+           Map<Merch,Integer> maps = ((MerchAdapter) recyclerViewMerch.getAdapter()).getMerchsMap();
+            Log.d("TAGGGGGGGGGG", String.valueOf(maps.size()));
+            Toast.makeText(activity, String.valueOf(maps), Toast.LENGTH_SHORT).show();
+            for (Map.Entry<Merch, Integer> entry : maps.entrySet()) {
+                Merch merch = entry.getKey();
+                int merchID = merch.getMerchId();
+                int amount = entry.getValue();
+            }
+
         });
     }
 
@@ -99,12 +106,16 @@ public class MerchbrowseFragment extends Fragment {
     }
 
     private class MerchAdapter extends RecyclerView.Adapter<MerchAdapter.MyMerchViewHolder>{
-        private List<Merch> rsMerchs;
+        private Map<Merch, Integer> rsMerchs;
         private LayoutInflater layoutInflater;
 
         public MerchAdapter(Context context, List<Merch> merchs){
             layoutInflater = LayoutInflater.from(context);
-            rsMerchs = merchs;
+            Map<Merch, Integer> merchsMap = new HashMap<>();
+            for (Merch merch : merchs) {
+                merchsMap.put(merch, 0);
+            }
+            rsMerchs = merchsMap;
         }
 
         public class MyMerchViewHolder extends RecyclerView.ViewHolder{
@@ -124,9 +135,14 @@ public class MerchbrowseFragment extends Fragment {
             }
         }
 
-        public void setMerchs(List<Merch> Merchs) {
-            rsMerchs = Merchs;
+        public void setMerchs(List<Merch> merchs) {
+            Map<Merch, Integer> merchsMap = new HashMap<>();
+            for (Merch merch : merchs) {
+                merchsMap.put(merch, 0);
+            }
+            rsMerchs = merchsMap;
         }
+        public Map<Merch, Integer> getMerchsMap() { return rsMerchs; }
 
         @NonNull
         @Override
@@ -137,8 +153,9 @@ public class MerchbrowseFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull MerchbrowseFragment.MerchAdapter.MyMerchViewHolder holder, int position) {
-        final Merch rsMerch = rsMerchs.get(position);
-        AtomicInteger amount = new AtomicInteger(0);
+        final Merch rsMerch = (Merch) rsMerchs.keySet().toArray()[position];
+        Integer num = rsMerchs.get(rsMerch);
+        AtomicInteger amount = new AtomicInteger(num == null ? 0 : num);
         int merch_id = rsMerch.getMerchId();
         String merch_name = rsMerch.getName();
         int merch_price = rsMerch.getPrice();
@@ -150,14 +167,14 @@ public class MerchbrowseFragment extends Fragment {
 
         holder.btn_sub.setOnClickListener(v ->{
             if (amount.get() > 0) {
-                amount.getAndDecrement();
+                rsMerchs.put(rsMerch, amount.decrementAndGet());
                 holder.edt_amount.setText(String.valueOf(amount.get()));
             }else{
                 holder.edt_amount.setText(String.valueOf(0));
             }
         });
         holder.btn_add.setOnClickListener(v ->{
-            amount.getAndIncrement();
+            rsMerchs.put(rsMerch, amount.incrementAndGet());
             holder.edt_amount.setText(String.valueOf(amount.get()));
         });
 
@@ -166,11 +183,5 @@ public class MerchbrowseFragment extends Fragment {
         @Override
         public int getItemCount() { return rsMerchs == null ? 0 : rsMerchs.size();
         }
-    }
-
-    private  void showBottomDialog(){
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(activity);
-        View view = LayoutInflater.from(activity).inflate(R.layout.commodity_choose_bottomsheet,null);
-
     }
 }
