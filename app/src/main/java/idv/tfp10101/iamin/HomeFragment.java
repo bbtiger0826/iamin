@@ -123,7 +123,7 @@ public class HomeFragment extends Fragment {
         HomeFragment.HomeAdapter groupAdapter = (HomeFragment.HomeAdapter) recyclerViewGroup.getAdapter();
         if (groupAdapter == null) {
             recyclerViewGroup.setAdapter(new HomeFragment.HomeAdapter(activity, localHomeDatas));
-            int px = (int) Constants.convertDpToPixel(1, activity); // 間距 8 dp
+            int px = (int) Constants.convertDpToPixel(8, activity); // 間距 8 dp
             recyclerViewGroup.addItemDecoration(new Constants.SpacesItemDecoration("bottom", px));
         }else{
             // 資訊重新載入刷新
@@ -198,8 +198,6 @@ public class HomeFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putInt("GroupID",GroupID);
                 Navigation.findNavController(v).navigate(R.id.merchbrowseFragment,bundle);
-
-//
             });
         }
 

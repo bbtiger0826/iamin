@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/colorBackground">
 
     <LinearLayout
@@ -22,6 +22,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvMerchimage"
             android:layout_width="0dp"
             android:layout_height="300dp" />
 
@@ -56,6 +57,37 @@
             android:layout_height="wrap_content"
             android:text="Price"
             android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_sub"
+                android:layout_width="12sp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:icon="@drawable/sub_icon" />
+
+            <EditText
+                android:id="@+id/edt_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:gravity="center"
+                android:inputType="number"
+                android:text="0" />
+
+            <Button
+                android:id="@+id/btn_add"
+                android:layout_width="12sp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:icon="@drawable/add_icon" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
