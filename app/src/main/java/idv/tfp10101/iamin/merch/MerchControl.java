@@ -195,7 +195,7 @@ public class MerchControl {
             String url = RemoteAccess.URL_SERVER + "Merch";
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("action", "getAllByGroupIdId");
-            jsonObject.addProperty("memberId", groupId);
+            jsonObject.addProperty("groupId", groupId);
 
             // requst
             String jsonString = RemoteAccess.getRometeData(url, new Gson().toJson(jsonObject));

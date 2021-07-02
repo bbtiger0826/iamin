@@ -196,7 +196,7 @@ public class HomeFragment extends Fragment {
                 // Toast.makeText(activity, String.valueOf(id), Toast.LENGTH_SHORT).show();
 
                 Bundle bundle = new Bundle();
-                bundle.putInt("id",GroupID);
+                bundle.putInt("GroupID",GroupID);
                 Navigation.findNavController(v).navigate(R.id.merchbrowseFragment,bundle);
 
 //
