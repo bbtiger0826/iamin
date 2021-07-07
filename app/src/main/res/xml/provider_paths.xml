@@ -2,4 +2,7 @@
 <paths>
     <!-- external-path name：自訂 path：/storage/emulate/0 -->
     <external-path name="external_files" path="."/>
+    <network-security-config>
+        <base-config cleartextTrafficPermitted="true" />
+    </network-security-config>
 </paths>

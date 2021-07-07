@@ -19,7 +19,6 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import idv.tfp10101.iamin.R;
 import idv.tfp10101.iamin.member.Member;
 
 import static idv.tfp10101.iamin.member.MemberControl.memberRemoteAccess;
@@ -39,7 +38,6 @@ public class SignUpFragment extends Fragment {
         auth = FirebaseAuth.getInstance();
         member = new Member();
         db = FirebaseFirestore.getInstance();
-
     }
 
     @Override
@@ -86,7 +84,7 @@ public class SignUpFragment extends Fragment {
             createAccount(member);
 
             //移動到首頁
-//            Navigation.findNavController(requireView()).navigate(R.id.action_signUpFragment_to_homeFragment);
+            Navigation.findNavController(requireView()).navigate(R.id.action_signUpFragment_to_homeFragment);
         });
     }
 
@@ -104,7 +102,6 @@ public class SignUpFragment extends Fragment {
                         Log.d(TAG, "createUserWithEmail:success");
                         //firebase創帳號
                         createMemberDataInfirebase(member);
-
                     } else {
                         Log.d(TAG, "createUserWithEmail:failure", task.getException());
                         Toast.makeText(getContext(), "Authentication failed.", Toast.LENGTH_SHORT).show();

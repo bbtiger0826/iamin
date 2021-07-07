@@ -31,4 +31,7 @@
     <string name="textFaceToFace">當面交易</string>
     <string name="textHome">首頁</string>
     <string name="textChat">聊天</string>
+    <string name="textSellerName">賣家名稱</string>
+    <string name="textNoSellerFound">找不到賣家</string>
+    <string name="textImageDownloadFail">照片下載錯誤</string>
 </resources>
