@@ -1,0 +1,1261 @@
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>plugins {\n    id 'com.android.application'\n    id 'com.google.gms.google-services'\n}\n\nandroid {\n    compileSdkVersion 30\n    buildToolsVersion \"30.0.3\"\n\n    defaultConfig {\n        applicationId \"idv.tfp10101.iamin\"\n        minSdkVersion 21\n        targetSdkVersion 30\n        versionCode 1\n        versionName \"1.0\"\n\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\n    }\n\n    buildTypes {\n        release {\n            minifyEnabled false\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\n        }\n    }\n    compileOptions {\n        sourceCompatibility JavaVersion.VERSION_1_8\n        targetCompatibility JavaVersion.VERSION_1_8\n    }\n}\n\ndependencies {\n\n    implementation 'androidx.appcompat:appcompat:1.3.0'\n    implementation 'com.google.android.material:material:1.3.0'\n    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'\n    implementation 'androidx.navigation:navigation-fragment:2.3.5'\n    implementation 'androidx.navigation:navigation-ui:2.3.5'\n    testImplementation 'junit:junit:4.+'\n    androidTestImplementation 'androidx.test.ext:junit:1.1.2'\n    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'\n    // Gson\n    implementation 'com.google.code.gson:gson:2.8.6'\n    // recyclerview & cardview\n    implementation 'androidx.recyclerview:recyclerview:1.2.1'\n    implementation 'androidx.cardview:cardview:1.0.0'\n    // swiperefresh\n    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'\n    implementation 'androidx.legacy:legacy-support-v4:1.0.0'\n    // Ucrop\n    implementation 'com.github.yalantis:ucrop:2.2.4'\n    //CircleImageView\n    implementation 'de.hdodenhof:circleimageview:3.1.0'\n    //googlebutton\n    implementation 'com.github.TutorialsAndroid:GButton:v1.0.19'\n    //facebook\n    implementation 'com.facebook.android:facebook-login:9.0.0'\n    implementation 'com.facebook.android:facebook-android-sdk:[4,5)'\n    //firebase\n    implementation platform('com.google.firebase:firebase-bom:28.2.0')\n    implementation 'com.google.firebase:firebase-analytics'\n    implementation 'com.google.firebase:firebase-auth'\n    implementation 'com.google.firebase:firebase-auth:21.0.1'\n    implementation 'com.google.android.gms:play-services-auth:19.0.0'\n    implementation 'com.google.firebase:firebase-storage'\n    implementation 'com.google.firebase:firebase-firestore'\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/build.gradle	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ app/build.gradle	(date 1625491440067)
+@@ -1,7 +1,5 @@
+-plugins {
+-    id 'com.android.application'
+-    id 'com.google.gms.google-services'
+-}
++apply plugin: 'com.android.application'
++apply plugin: 'com.google.gms.google-services'
+ 
+ android {
+     compileSdkVersion 30
+Index: .idea/libraries/Gradle__com_facebook_android_facebook_share_4_42_0_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__com_facebook_android_facebook_share_4_42_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_facebook_android_facebook_share_4_42_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,15 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.facebook.android:facebook-share:4.42.0@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1b798c59f87ff077e233d1898c6e9c50/facebook-share-4.42.0/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1b798c59f87ff077e233d1898c6e9c50/facebook-share-4.42.0/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1b798c59f87ff077e233d1898c6e9c50/facebook-share-4.42.0/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.facebook.android/facebook-share/4.42.0/3e09e423eaa79903ec9d4d02df95ce3be786ecdf/facebook-share-4.42.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.facebook.android/facebook-share/4.42.0/9dff16a66d911737fe9609dd65129e0c5fed824b/facebook-share-4.42.0-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_firebase_firebase_analytics_19_0_0_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__com_google_firebase_firebase_analytics_19_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_google_firebase_firebase_analytics_19_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.google.firebase:firebase-analytics:19.0.0@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/51c8ec8da777f5b5de0b94999209ffaf/firebase-analytics-19.0.0/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/51c8ec8da777f5b5de0b94999209ffaf/firebase-analytics-19.0.0/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/51c8ec8da777f5b5de0b94999209ffaf/firebase-analytics-19.0.0/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-analytics/19.0.0/c0d58b8efa926b2c607984c54fb3d274490badd1/firebase-analytics-19.0.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES />
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_firebase_firebase_measurement_connector_19_0_0_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__com_google_firebase_firebase_measurement_connector_19_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_google_firebase_firebase_measurement_connector_19_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.google.firebase:firebase-measurement-connector:19.0.0@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/886b72104344a81ba4682099cc09e6f4/firebase-measurement-connector-19.0.0/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/886b72104344a81ba4682099cc09e6f4/firebase-measurement-connector-19.0.0/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/886b72104344a81ba4682099cc09e6f4/firebase-measurement-connector-19.0.0/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-measurement-connector/19.0.0/c0d58b8efa926b2c607984c54fb3d274490badd1/firebase-measurement-connector-19.0.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES />
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__de_hdodenhof_circleimageview_3_1_0_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__de_hdodenhof_circleimageview_3_1_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__de_hdodenhof_circleimageview_3_1_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,15 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: de.hdodenhof:circleimageview:3.1.0@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/44c35fa95c6e5344358134ddecbc5332/circleimageview-3.1.0/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/44c35fa95c6e5344358134ddecbc5332/circleimageview-3.1.0/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/44c35fa95c6e5344358134ddecbc5332/circleimageview-3.1.0/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/de.hdodenhof/circleimageview/3.1.0/e33964c462b854162fee2bd3cd52889ef878df77/circleimageview-3.1.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/de.hdodenhof/circleimageview/3.1.0/e5635e59d66b172f3e99c6a7044dc9535c95d180/circleimageview-3.1.0-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_squareup_okhttp_okhttp_2_7_5.xml
+===================================================================
+--- .idea/libraries/Gradle__com_squareup_okhttp_okhttp_2_7_5.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_squareup_okhttp_okhttp_2_7_5.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.squareup.okhttp:okhttp:2.7.5">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp/okhttp/2.7.5/7a15a7db50f86c4b64aa3367424a60e3a325b8f1/okhttp-2.7.5.jar!/" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp/okhttp/2.7.5/87d10b7ccfeceee1878ef642caa98a6c338d2533/okhttp-2.7.5-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp/okhttp/2.7.5/6b16ea4e0a54f9eada97779ae33cb4d3223f5d35/okhttp-2.7.5-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__io_grpc_grpc_core_1_28_0.xml
+===================================================================
+--- .idea/libraries/Gradle__io_grpc_grpc_core_1_28_0.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__io_grpc_grpc_core_1_28_0.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: io.grpc:grpc-core:1.28.0">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.grpc/grpc-core/1.28.0/d00ff851f030b3f100e2bdd672bfd69dec17f9bb/grpc-core-1.28.0.jar!/" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.grpc/grpc-core/1.28.0/34584f105a0f8e6bc2a27578be0312300f04355d/grpc-core-1.28.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.grpc/grpc-core/1.28.0/d31fa7d2fc4de566c29e0e85ebc96831528e7379/grpc-core-1.28.0-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_guava_guava_28_1_android.xml
+===================================================================
+--- .idea/libraries/Gradle__com_google_guava_guava_28_1_android.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_google_guava_guava_28_1_android.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.google.guava:guava:28.1-android">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/28.1-android/c2526f8fad32a65a6d7032dd8e9524eb276b108b/guava-28.1-android.jar!/" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/28.1-android/d40c528563d9f8286d1938788852bd422b35c8d5/guava-28.1-android-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/28.1-android/9ac9044706a470997a815d740a2f21c06dc7274b/guava-28.1-android-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_android_gms_play_services_ads_identifier_17_0_0_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__com_google_android_gms_play_services_ads_identifier_17_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_google_android_gms_play_services_ads_identifier_17_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.google.android.gms:play-services-ads-identifier:17.0.0@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3f8b691acb1381846d75ca1ccd1e6932/play-services-ads-identifier-17.0.0/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3f8b691acb1381846d75ca1ccd1e6932/play-services-ads-identifier-17.0.0/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3f8b691acb1381846d75ca1ccd1e6932/play-services-ads-identifier-17.0.0/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES />
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_android_gms_play_services_measurement_impl_19_0_0_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__com_google_android_gms_play_services_measurement_impl_19_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_google_android_gms_play_services_measurement_impl_19_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.google.android.gms:play-services-measurement-impl:19.0.0@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/408f5abf221494e347df64f8bd007d95/play-services-measurement-impl-19.0.0/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/408f5abf221494e347df64f8bd007d95/play-services-measurement-impl-19.0.0/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/408f5abf221494e347df64f8bd007d95/play-services-measurement-impl-19.0.0/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-measurement-impl/19.0.0/449d5453b617f030923b1eda6697c8da4661d8f0/play-services-measurement-impl-19.0.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES />
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_firebase_firebase_annotations_16_0_0.xml
+===================================================================
+--- .idea/libraries/Gradle__com_google_firebase_firebase_annotations_16_0_0.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_google_firebase_firebase_annotations_16_0_0.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.google.firebase:firebase-annotations:16.0.0">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-annotations/16.0.0/dbeae20d6c97b747b59ef47b6dcf770ba1a60fa6/firebase-annotations-16.0.0.jar!/" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-annotations/16.0.0/547590a65ca39ae1f7c72b5f2028f9e1abe6429e/firebase-annotations-16.0.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-annotations/16.0.0/c8e0434511a2f8f949f2c4e8af56cf690f596837/firebase-annotations-16.0.0-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__io_grpc_grpc_context_1_28_0.xml
+===================================================================
+--- .idea/libraries/Gradle__io_grpc_grpc_context_1_28_0.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__io_grpc_grpc_context_1_28_0.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: io.grpc:grpc-context:1.28.0">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.grpc/grpc-context/1.28.0/36d7838a68e29ad12a3cf67a4e04b621c617ce09/grpc-context-1.28.0.jar!/" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.grpc/grpc-context/1.28.0/fc6adef37ea29cc12f6023512a5ce2c1ef186533/grpc-context-1.28.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.grpc/grpc-context/1.28.0/feff19afc7744d47c419c50b7714c2c23349b552/grpc-context-1.28.0-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_guava_listenablefuture_9999_0_empty_to_avoid_conflict_with_guava.xml
+===================================================================
+--- .idea/libraries/Gradle__com_google_guava_listenablefuture_9999_0_empty_to_avoid_conflict_with_guava.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_google_guava_listenablefuture_9999_0_empty_to_avoid_conflict_with_guava.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,9 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/b421526c5f297295adef1c886e5246c39d4ac629/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES />
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_android_gms_play_services_measurement_base_19_0_0_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__com_google_android_gms_play_services_measurement_base_19_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_google_android_gms_play_services_measurement_base_19_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.google.android.gms:play-services-measurement-base:19.0.0@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/961ef467297b48609bdf031ab55e64a9/play-services-measurement-base-19.0.0/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/961ef467297b48609bdf031ab55e64a9/play-services-measurement-base-19.0.0/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/961ef467297b48609bdf031ab55e64a9/play-services-measurement-base-19.0.0/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-measurement-base/19.0.0/c0d58b8efa926b2c607984c54fb3d274490badd1/play-services-measurement-base-19.0.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES />
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__io_grpc_grpc_android_1_28_0_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__io_grpc_grpc_android_1_28_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__io_grpc_grpc_android_1_28_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,15 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: io.grpc:grpc-android:1.28.0@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/626f1ca1b27148be4510e1a863e73171/grpc-android-1.28.0/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/626f1ca1b27148be4510e1a863e73171/grpc-android-1.28.0/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/626f1ca1b27148be4510e1a863e73171/grpc-android-1.28.0/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.grpc/grpc-android/1.28.0/e7c3f4a90a5862818fc0ff52806ab2b2986bea67/grpc-android-1.28.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.grpc/grpc-android/1.28.0/64355636f33bb77e4e0677e3de8ba7a48d6a74d/grpc-android-1.28.0-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_facebook_android_facebook_android_sdk_4_42_0_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__com_facebook_android_facebook_android_sdk_4_42_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_facebook_android_facebook_android_sdk_4_42_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,15 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.facebook.android:facebook-android-sdk:4.42.0@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/bce2c25f8be4de663d63dce9686d8311/facebook-android-sdk-4.42.0/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/bce2c25f8be4de663d63dce9686d8311/facebook-android-sdk-4.42.0/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/bce2c25f8be4de663d63dce9686d8311/facebook-android-sdk-4.42.0/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.facebook.android/facebook-android-sdk/4.42.0/6eb5edc5494057a8ac0150064c6f54f96e2cfea7/facebook-android-sdk-4.42.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.facebook.android/facebook-android-sdk/4.42.0/7be0a9acf42041175f0bbe89fe30326f860097c8/facebook-android-sdk-4.42.0-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_facebook_android_facebook_places_4_42_0_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__com_facebook_android_facebook_places_4_42_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_facebook_android_facebook_places_4_42_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,15 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.facebook.android:facebook-places:4.42.0@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/192cb83971d81d83eba3b3020cd40ffc/facebook-places-4.42.0/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/192cb83971d81d83eba3b3020cd40ffc/facebook-places-4.42.0/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/192cb83971d81d83eba3b3020cd40ffc/facebook-places-4.42.0/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.facebook.android/facebook-places/4.42.0/7503d0c10757ebc1df31db069ff749e45c909acf/facebook-places-4.42.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.facebook.android/facebook-places/4.42.0/4636a3197c6548739fe9ee3f1dd37c489203094c/facebook-places-4.42.0-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_android_gms_play_services_measurement_api_19_0_0_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__com_google_android_gms_play_services_measurement_api_19_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_google_android_gms_play_services_measurement_api_19_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.google.android.gms:play-services-measurement-api:19.0.0@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/de2c13ed196484300b446ed312f50cec/play-services-measurement-api-19.0.0/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/de2c13ed196484300b446ed312f50cec/play-services-measurement-api-19.0.0/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/de2c13ed196484300b446ed312f50cec/play-services-measurement-api-19.0.0/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-measurement-api/19.0.0/96ca3a78e54874a350bd808e9f407fc7a7ea93/play-services-measurement-api-19.0.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES />
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_android_gms_play_services_auth_base_17_0_0_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__com_google_android_gms_play_services_auth_base_17_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_google_android_gms_play_services_auth_base_17_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.google.android.gms:play-services-auth-base:17.0.0@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5eb91b25f686c2c505c49506aa3cfbc2/play-services-auth-base-17.0.0/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5eb91b25f686c2c505c49506aa3cfbc2/play-services-auth-base-17.0.0/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5eb91b25f686c2c505c49506aa3cfbc2/play-services-auth-base-17.0.0/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES />
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_firebase_protolite_well_known_types_18_0_0_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__com_google_firebase_protolite_well_known_types_18_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_google_firebase_protolite_well_known_types_18_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.google.firebase:protolite-well-known-types:18.0.0@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/74a57255a2815f7692e61cdae3dcb85c/protolite-well-known-types-18.0.0/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/74a57255a2815f7692e61cdae3dcb85c/protolite-well-known-types-18.0.0/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/74a57255a2815f7692e61cdae3dcb85c/protolite-well-known-types-18.0.0/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/protolite-well-known-types/18.0.0/8e15c66257eefa93807e8dc218bf82da40c5390c/protolite-well-known-types-18.0.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES />
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_facebook_android_facebook_applinks_4_42_0_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__com_facebook_android_facebook_applinks_4_42_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_facebook_android_facebook_applinks_4_42_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,15 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.facebook.android:facebook-applinks:4.42.0@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ab022b49e2526434fd20e80740151ed7/facebook-applinks-4.42.0/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ab022b49e2526434fd20e80740151ed7/facebook-applinks-4.42.0/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ab022b49e2526434fd20e80740151ed7/facebook-applinks-4.42.0/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.facebook.android/facebook-applinks/4.42.0/57bdc182ac0aa0856985aa1e8b48e82e47c7dcbc/facebook-applinks-4.42.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.facebook.android/facebook-applinks/4.42.0/a98313e0f3e55881d645aed3e948b970cf8896d6/facebook-applinks-4.42.0-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_zxing_core_3_3_3.xml
+===================================================================
+--- .idea/libraries/Gradle__com_google_zxing_core_3_3_3.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_google_zxing_core_3_3_3.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.google.zxing:core:3.3.3">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.zxing/core/3.3.3/b640badcc97f18867c4dfd249ef8d20ec0204c07/core-3.3.3.jar!/" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.zxing/core/3.3.3/469db2817d5d3ffb60f0cce4cac8436dd57e920e/core-3.3.3-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.zxing/core/3.3.3/536b6ab3b3b4607ce86e2ff7f6643db11c473aa7/core-3.3.3-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_firebase_firebase_database_collection_18_0_0_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__com_google_firebase_firebase_database_collection_18_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_google_firebase_firebase_database_collection_18_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,15 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.google.firebase:firebase-database-collection:18.0.0@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a8e020c564aed18e8ed957df2c5757e1/firebase-database-collection-18.0.0/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a8e020c564aed18e8ed957df2c5757e1/firebase-database-collection-18.0.0/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a8e020c564aed18e8ed957df2c5757e1/firebase-database-collection-18.0.0/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-database-collection/18.0.0/356b17279173563a32e5043c9ead29ca888f8813/firebase-database-collection-18.0.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-database-collection/18.0.0/6996e9054c5e2be34fe5b7094aa44d72a0b14aa0/firebase-database-collection-18.0.0-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_facebook_android_facebook_messenger_4_42_0_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__com_facebook_android_facebook_messenger_4_42_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_facebook_android_facebook_messenger_4_42_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,15 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.facebook.android:facebook-messenger:4.42.0@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/6b534a61d5d6dee7cc1241da1d7ee898/facebook-messenger-4.42.0/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/6b534a61d5d6dee7cc1241da1d7ee898/facebook-messenger-4.42.0/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/6b534a61d5d6dee7cc1241da1d7ee898/facebook-messenger-4.42.0/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.facebook.android/facebook-messenger/4.42.0/f6b9e057e3a148c8c8e34ff5b64471ae367ec0a7/facebook-messenger-4.42.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.facebook.android/facebook-messenger/4.42.0/15eae717fd6670aab5ece51d7f251810e8bcfc76/facebook-messenger-4.42.0-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_android_gms_play_services_tasks_17_0_0_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__com_google_android_gms_play_services_tasks_17_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_google_android_gms_play_services_tasks_17_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.google.android.gms:play-services-tasks:17.0.0@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2bf10c92d9153cfb2c1ea68f8039b5a6/play-services-tasks-17.0.0/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2bf10c92d9153cfb2c1ea68f8039b5a6/play-services-tasks-17.0.0/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2bf10c92d9153cfb2c1ea68f8039b5a6/play-services-tasks-17.0.0/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES />
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__io_grpc_grpc_okhttp_1_28_0.xml
+===================================================================
+--- .idea/libraries/Gradle__io_grpc_grpc_okhttp_1_28_0.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__io_grpc_grpc_okhttp_1_28_0.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: io.grpc:grpc-okhttp:1.28.0">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.grpc/grpc-okhttp/1.28.0/2dc3f7171029561afcc8342682bca032c79f7ebd/grpc-okhttp-1.28.0.jar!/" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.grpc/grpc-okhttp/1.28.0/fb331470a8fa88aaf0e3bd4bee7e909ecc3b3de/grpc-okhttp-1.28.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.grpc/grpc-okhttp/1.28.0/87b35c1f48229b724075d523d2e15d3cd8b6fe84/grpc-okhttp-1.28.0-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_android_gms_play_services_base_17_1_0_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__com_google_android_gms_play_services_base_17_1_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_google_android_gms_play_services_base_17_1_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.google.android.gms:play-services-base:17.1.0@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/538218237693c51a7f3aab01e8fb86e8/play-services-base-17.1.0/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/538218237693c51a7f3aab01e8fb86e8/play-services-base-17.1.0/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/538218237693c51a7f3aab01e8fb86e8/play-services-base-17.1.0/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-base/17.1.0/d906658f01adc56396bea0573cf0ee171933e54/play-services-base-17.1.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES />
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_android_gms_play_services_stats_17_0_0_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__com_google_android_gms_play_services_stats_17_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_google_android_gms_play_services_stats_17_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.google.android.gms:play-services-stats:17.0.0@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d941444ac7a095472cb9693abaaedccd/play-services-stats-17.0.0/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d941444ac7a095472cb9693abaaedccd/play-services-stats-17.0.0/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d941444ac7a095472cb9693abaaedccd/play-services-stats-17.0.0/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES />
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_firebase_firebase_auth_interop_20_0_0_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__com_google_firebase_firebase_auth_interop_20_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_google_firebase_firebase_auth_interop_20_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.google.firebase:firebase-auth-interop:20.0.0@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b037ec23770d46f1f24d2392689b3a67/firebase-auth-interop-20.0.0/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b037ec23770d46f1f24d2392689b3a67/firebase-auth-interop-20.0.0/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b037ec23770d46f1f24d2392689b3a67/firebase-auth-interop-20.0.0/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-auth-interop/20.0.0/8014b3cbc53e9c14226052dd919055a99d0d46d8/firebase-auth-interop-20.0.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES />
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__io_grpc_grpc_stub_1_28_0.xml
+===================================================================
+--- .idea/libraries/Gradle__io_grpc_grpc_stub_1_28_0.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__io_grpc_grpc_stub_1_28_0.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: io.grpc:grpc-stub:1.28.0">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.grpc/grpc-stub/1.28.0/45f3c9ee073c1a4be4f27daebdc4fee21337e549/grpc-stub-1.28.0.jar!/" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.grpc/grpc-stub/1.28.0/be62174d5d1f328cdb8cf1a711e135e8a0f2feab/grpc-stub-1.28.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.grpc/grpc-stub/1.28.0/64b3961a1169cfce06cde0f98929fc01361cc239/grpc-stub-1.28.0-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_android_gms_play_services_safetynet_17_0_0_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__com_google_android_gms_play_services_safetynet_17_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_google_android_gms_play_services_safetynet_17_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.google.android.gms:play-services-safetynet:17.0.0@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9ace64ef20aabba8ff19d02c5098c10f/play-services-safetynet-17.0.0/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9ace64ef20aabba8ff19d02c5098c10f/play-services-safetynet-17.0.0/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9ace64ef20aabba8ff19d02c5098c10f/play-services-safetynet-17.0.0/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES />
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_android_gms_play_services_measurement_sdk_19_0_0_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__com_google_android_gms_play_services_measurement_sdk_19_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_google_android_gms_play_services_measurement_sdk_19_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.google.android.gms:play-services-measurement-sdk:19.0.0@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/cde03bfce13d951d22edc8daa86f6b48/play-services-measurement-sdk-19.0.0/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/cde03bfce13d951d22edc8daa86f6b48/play-services-measurement-sdk-19.0.0/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/cde03bfce13d951d22edc8daa86f6b48/play-services-measurement-sdk-19.0.0/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-measurement-sdk/19.0.0/c0d58b8efa926b2c607984c54fb3d274490badd1/play-services-measurement-sdk-19.0.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES />
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_j2objc_j2objc_annotations_1_3.xml
+===================================================================
+--- .idea/libraries/Gradle__com_google_j2objc_j2objc_annotations_1_3.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_google_j2objc_j2objc_annotations_1_3.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.google.j2objc:j2objc-annotations:1.3">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.j2objc/j2objc-annotations/1.3/ba035118bc8bac37d7eff77700720999acd9986d/j2objc-annotations-1.3.jar!/" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.j2objc/j2objc-annotations/1.3/c221c5edcc5bed0b4c030c5dfc3b44739386a8d9/j2objc-annotations-1.3-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.j2objc/j2objc-annotations/1.3/d26c56180205cbb50447c3eca98ecb617cf9f58b/j2objc-annotations-1.3-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_android_gms_play_services_measurement_19_0_0_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__com_google_android_gms_play_services_measurement_19_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_google_android_gms_play_services_measurement_19_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.google.android.gms:play-services-measurement:19.0.0@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a2984f0210723d09e67626552b7d859d/play-services-measurement-19.0.0/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a2984f0210723d09e67626552b7d859d/play-services-measurement-19.0.0/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a2984f0210723d09e67626552b7d859d/play-services-measurement-19.0.0/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-measurement/19.0.0/2a0cba8dbe8c53b801367204f9d4cb948ac2ea23/play-services-measurement-19.0.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES />
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_firebase_firebase_firestore_23_0_1_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__com_google_firebase_firebase_firestore_23_0_1_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_google_firebase_firebase_firestore_23_0_1_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,15 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.google.firebase:firebase-firestore:23.0.1@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9462a20fd934ebb5d788c2110a920218/firebase-firestore-23.0.1/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9462a20fd934ebb5d788c2110a920218/firebase-firestore-23.0.1/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9462a20fd934ebb5d788c2110a920218/firebase-firestore-23.0.1/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-firestore/23.0.1/f4fb5a9f183a59a74c71b7d67833254749facfe7/firebase-firestore-23.0.1-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-firestore/23.0.1/ecedd4eb09b66e694034b183826e2e3f06a4e987/firebase-firestore-23.0.1-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_firebase_firebase_appcheck_interop_16_0_0_beta01_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__com_google_firebase_firebase_appcheck_interop_16_0_0_beta01_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_google_firebase_firebase_appcheck_interop_16_0_0_beta01_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,15 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.google.firebase:firebase-appcheck-interop:16.0.0-beta01@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0804391a8feec84b67a5da249b1a488e/firebase-appcheck-interop-16.0.0-beta01/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0804391a8feec84b67a5da249b1a488e/firebase-appcheck-interop-16.0.0-beta01/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0804391a8feec84b67a5da249b1a488e/firebase-appcheck-interop-16.0.0-beta01/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-appcheck-interop/16.0.0-beta01/fc6f639d2de21d65a5cdfc2fb2f1f16a04699789/firebase-appcheck-interop-16.0.0-beta01-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-appcheck-interop/16.0.0-beta01/67f2cdb7c59735c6e0c9f08c2884b7d74df39986/firebase-appcheck-interop-16.0.0-beta01-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_firebase_firebase_common_20_0_0_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__com_google_firebase_firebase_common_20_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_google_firebase_firebase_common_20_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,15 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.google.firebase:firebase-common:20.0.0@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ba99f0db75ff1152780be89a71df52d7/firebase-common-20.0.0/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ba99f0db75ff1152780be89a71df52d7/firebase-common-20.0.0/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ba99f0db75ff1152780be89a71df52d7/firebase-common-20.0.0/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-common/20.0.0/35a489d6cdcfa34dd756120fe574500e30a62d8a/firebase-common-20.0.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-common/20.0.0/a2cc0a72ed0bc6d121c9bb18517266f1abb36845/firebase-common-20.0.0-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_firebase_firebase_storage_20_0_0_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__com_google_firebase_firebase_storage_20_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_google_firebase_firebase_storage_20_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,15 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.google.firebase:firebase-storage:20.0.0@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f2e60f1f93a0efa46b835b7590f585a0/firebase-storage-20.0.0/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f2e60f1f93a0efa46b835b7590f585a0/firebase-storage-20.0.0/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f2e60f1f93a0efa46b835b7590f585a0/firebase-storage-20.0.0/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-storage/20.0.0/239b2d5bd0105d8920ba3d472ab0f437c1fc388a/firebase-storage-20.0.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-storage/20.0.0/44d9a9237515726384d0491c44fd2c1a4d383ddc/firebase-storage-20.0.0-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__org_codehaus_mojo_animal_sniffer_annotations_1_18.xml
+===================================================================
+--- .idea/libraries/Gradle__org_codehaus_mojo_animal_sniffer_annotations_1_18.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__org_codehaus_mojo_animal_sniffer_annotations_1_18.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: org.codehaus.mojo:animal-sniffer-annotations:1.18">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.codehaus.mojo/animal-sniffer-annotations/1.18/f7aa683ea79dc6681ee9fb95756c999acbb62f5d/animal-sniffer-annotations-1.18.jar!/" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.codehaus.mojo/animal-sniffer-annotations/1.18/f91787f431d2e9b834e88252674da3553124f4be/animal-sniffer-annotations-1.18-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.codehaus.mojo/animal-sniffer-annotations/1.18/dff084acf1ff3ff9145b1708c566787d2c82dd0/animal-sniffer-annotations-1.18-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_guava_failureaccess_1_0_1.xml
+===================================================================
+--- .idea/libraries/Gradle__com_google_guava_failureaccess_1_0_1.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_google_guava_failureaccess_1_0_1.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.google.guava:failureaccess:1.0.1">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/failureaccess/1.0.1/1dcf1de382a0bf95a3d8b0849546c88bac1292c9/failureaccess-1.0.1.jar!/" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/failureaccess/1.0.1/a9aadb2d577ff54ba3115ee7357cbe65bd2a470f/failureaccess-1.0.1-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/failureaccess/1.0.1/1d064e61aad6c51cc77f9b59dc2cccc78e792f5a/failureaccess-1.0.1-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_android_annotations_4_1_1_4.xml
+===================================================================
+--- .idea/libraries/Gradle__com_google_android_annotations_4_1_1_4.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_google_android_annotations_4_1_1_4.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.google.android:annotations:4.1.1.4">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android/annotations/4.1.1.4/a1678ba907bf92691d879fef34e1a187038f9259/annotations-4.1.1.4.jar!/" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android/annotations/4.1.1.4/d4ac27fd4d25892bf2465d60bc3a3d499262c2fb/annotations-4.1.1.4-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android/annotations/4.1.1.4/deb22daeb37bdcbc14230aeaeddce38320d6d0f9/annotations-4.1.1.4-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_facebook_android_facebook_core_9_0_0_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__com_facebook_android_facebook_core_9_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_facebook_android_facebook_core_9_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,15 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.facebook.android:facebook-core:9.0.0@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/56837b7e838a1f7d7ca2aea29cb493f9/facebook-core-9.0.0/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/56837b7e838a1f7d7ca2aea29cb493f9/facebook-core-9.0.0/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/56837b7e838a1f7d7ca2aea29cb493f9/facebook-core-9.0.0/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.facebook.android/facebook-core/9.0.0/216fe40a8a4d3bae9d118c56cac54f45ed1898a4/facebook-core-9.0.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.facebook.android/facebook-core/9.0.0/ff85a1183d892a5d83a4c32499319a401fe0cb25/facebook-core-9.0.0-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_android_gms_play_services_auth_api_phone_17_4_0_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__com_google_android_gms_play_services_auth_api_phone_17_4_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_google_android_gms_play_services_auth_api_phone_17_4_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.google.android.gms:play-services-auth-api-phone:17.4.0@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/44f8d1ee0be09a27bb098a5daf51c63a/play-services-auth-api-phone-17.4.0/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/44f8d1ee0be09a27bb098a5daf51c63a/play-services-auth-api-phone-17.4.0/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/44f8d1ee0be09a27bb098a5daf51c63a/play-services-auth-api-phone-17.4.0/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-auth-api-phone/17.4.0/b6b7f35110232b40de7a1374921fcff1eaa864ba/play-services-auth-api-phone-17.4.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES />
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_android_installreferrer_installreferrer_1_0_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__com_android_installreferrer_installreferrer_1_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_android_installreferrer_installreferrer_1_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,18 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.android.installreferrer:installreferrer:1.0@aar">
+-    <ANNOTATIONS>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b30f4b788d8f71ac15d14f4f5edbb8f9/installreferrer-1.0/annotations.zip!/" />
+-    </ANNOTATIONS>
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b30f4b788d8f71ac15d14f4f5edbb8f9/installreferrer-1.0/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b30f4b788d8f71ac15d14f4f5edbb8f9/installreferrer-1.0/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b30f4b788d8f71ac15d14f4f5edbb8f9/installreferrer-1.0/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.android.installreferrer/installreferrer/1.0/a572d7b98f4738eb9677ff7bce82608f28c5b0e/installreferrer-1.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.android.installreferrer/installreferrer/1.0/3241c0c1c69068520c6ac47283680a9f9f46f532/installreferrer-1.0-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_android_gms_play_services_basement_17_1_1_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__com_google_android_gms_play_services_basement_17_1_1_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_google_android_gms_play_services_basement_17_1_1_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.google.android.gms:play-services-basement:17.1.1@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/e1cd6e6fbe6209a98f305486cbc88522/play-services-basement-17.1.1/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/e1cd6e6fbe6209a98f305486cbc88522/play-services-basement-17.1.1/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/e1cd6e6fbe6209a98f305486cbc88522/play-services-basement-17.1.1/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-basement/17.1.1/789595fa5b619e569d42c42b0fe96cd0b6ded1dc/play-services-basement-17.1.1-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES />
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__io_grpc_grpc_protobuf_lite_1_28_0.xml
+===================================================================
+--- .idea/libraries/Gradle__io_grpc_grpc_protobuf_lite_1_28_0.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__io_grpc_grpc_protobuf_lite_1_28_0.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: io.grpc:grpc-protobuf-lite:1.28.0">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.grpc/grpc-protobuf-lite/1.28.0/62494e71413636cc678b2c7caf1eb3a1ce4d0dd6/grpc-protobuf-lite-1.28.0.jar!/" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.grpc/grpc-protobuf-lite/1.28.0/7f468cf72ef0084b79613e7133a5bba10deef4dd/grpc-protobuf-lite-1.28.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.grpc/grpc-protobuf-lite/1.28.0/9635b339fcd7acaf22c3d077cb9dbd6e91bd4f5f/grpc-protobuf-lite-1.28.0-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_android_gms_play_services_auth_19_0_0_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__com_google_android_gms_play_services_auth_19_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_google_android_gms_play_services_auth_19_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.google.android.gms:play-services-auth:19.0.0@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5b2fe0c71c9868f448e8c29a6b116e74/play-services-auth-19.0.0/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5b2fe0c71c9868f448e8c29a6b116e74/play-services-auth-19.0.0/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5b2fe0c71c9868f448e8c29a6b116e74/play-services-auth-19.0.0/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-auth/19.0.0/3b59304365c13d789c43fe9eb65dfe174583aab6/play-services-auth-19.0.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES />
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__org_checkerframework_checker_compat_qual_2_5_5.xml
+===================================================================
+--- .idea/libraries/Gradle__org_checkerframework_checker_compat_qual_2_5_5.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__org_checkerframework_checker_compat_qual_2_5_5.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: org.checkerframework:checker-compat-qual:2.5.5">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.checkerframework/checker-compat-qual/2.5.5/435dc33e3019c9f019e15f01aa111de9d6b2b79c/checker-compat-qual-2.5.5.jar!/" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.checkerframework/checker-compat-qual/2.5.5/cf2f059c896e5f70e2d3f1869b3066d45c5f87dc/checker-compat-qual-2.5.5-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.checkerframework/checker-compat-qual/2.5.5/54d4253d4d8723096a95b7551bd5639e7e2affba/checker-compat-qual-2.5.5-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_firebase_firebase_installations_17_0_0_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__com_google_firebase_firebase_installations_17_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_google_firebase_firebase_installations_17_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.google.firebase:firebase-installations:17.0.0@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a30eae67e308f2990f34fd0ceabcf627/firebase-installations-17.0.0/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a30eae67e308f2990f34fd0ceabcf627/firebase-installations-17.0.0/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a30eae67e308f2990f34fd0ceabcf627/firebase-installations-17.0.0/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-installations/17.0.0/e06d4f72c8a51d321459518b52064a4855c7ac5a/firebase-installations-17.0.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES />
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_parse_bolts_bolts_applinks_1_4_0.xml
+===================================================================
+--- .idea/libraries/Gradle__com_parse_bolts_bolts_applinks_1_4_0.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_parse_bolts_bolts_applinks_1_4_0.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.parse.bolts:bolts-applinks:1.4.0">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-applinks/1.4.0/8ad21bf21784dacce5f2043afb97218cc377e835/bolts-applinks-1.4.0.jar!/" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-applinks/1.4.0/d89257bc87380d28e24ea2103c711d3f79c0c9da/bolts-applinks-1.4.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-applinks/1.4.0/7b0b0d485f566cd1b70d7d4ea20bf3620af71c1c/bolts-applinks-1.4.0-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_protobuf_protobuf_javalite_3_14_0.xml
+===================================================================
+--- .idea/libraries/Gradle__com_google_protobuf_protobuf_javalite_3_14_0.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_google_protobuf_protobuf_javalite_3_14_0.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.google.protobuf:protobuf-javalite:3.14.0">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.protobuf/protobuf-javalite/3.14.0/1f3dcd6a80126749748b85e822c09428468423b3/protobuf-javalite-3.14.0.jar!/" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.protobuf/protobuf-javalite/3.14.0/103d81b0e91d865fb52d45aee894ba04075fa1e2/protobuf-javalite-3.14.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.protobuf/protobuf-javalite/3.14.0/4064303b90e583ac5fc477416ec82586f0670d4c/protobuf-javalite-3.14.0-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_firebase_firebase_installations_interop_17_0_0_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__com_google_firebase_firebase_installations_interop_17_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_google_firebase_firebase_installations_interop_17_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.google.firebase:firebase-installations-interop:17.0.0@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/629373d4bbcff08143d7a9d12d28a65a/firebase-installations-interop-17.0.0/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/629373d4bbcff08143d7a9d12d28a65a/firebase-installations-interop-17.0.0/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/629373d4bbcff08143d7a9d12d28a65a/firebase-installations-interop-17.0.0/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-installations-interop/17.0.0/ac6ab4866e0eefc2f4aa88b449b5c615939c3545/firebase-installations-interop-17.0.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES />
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_firebase_firebase_components_17_0_0_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__com_google_firebase_firebase_components_17_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_google_firebase_firebase_components_17_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,15 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.google.firebase:firebase-components:17.0.0@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1e26be816dae9ed47e50db3e9b1d16b0/firebase-components-17.0.0/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1e26be816dae9ed47e50db3e9b1d16b0/firebase-components-17.0.0/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1e26be816dae9ed47e50db3e9b1d16b0/firebase-components-17.0.0/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-components/17.0.0/9e60bbf61b1c71e0b01a3e959f2e2111b51f3c83/firebase-components-17.0.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-components/17.0.0/15fad94dd3f9b6ecf5e03a5a7c08732f8ef3a5be/firebase-components-17.0.0-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_code_findbugs_jsr305_3_0_2.xml
+===================================================================
+--- .idea/libraries/Gradle__com_google_code_findbugs_jsr305_3_0_2.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_google_code_findbugs_jsr305_3_0_2.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.google.code.findbugs:jsr305:3.0.2">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.2/25ea2e8b0c338a877313bd4672d3fe056ea78f0d/jsr305-3.0.2.jar!/" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.2/7cb5b4e91eb0741882c8fefb2fd0338eff9857c/jsr305-3.0.2-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.2/b19b5927c2c25b6c70f093767041e641ae0b1b35/jsr305-3.0.2-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_parse_bolts_bolts_android_1_4_0.xml
+===================================================================
+--- .idea/libraries/Gradle__com_parse_bolts_bolts_android_1_4_0.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_parse_bolts_bolts_android_1_4_0.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.parse.bolts:bolts-android:1.4.0">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-android/1.4.0/cc174c559b5177982887bf6e1b76003aebad9516/bolts-android-1.4.0.jar!/" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-android/1.4.0/a1942c5e480d86987076fbaae8d2403b0c70927d/bolts-android-1.4.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-android/1.4.0/a1942c5e480d86987076fbaae8d2403b0c70927d/bolts-android-1.4.0-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_facebook_android_facebook_common_9_0_0_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__com_facebook_android_facebook_common_9_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_facebook_android_facebook_common_9_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,15 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.facebook.android:facebook-common:9.0.0@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5f0b1b8fffd414490cd614e5c5bff869/facebook-common-9.0.0/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5f0b1b8fffd414490cd614e5c5bff869/facebook-common-9.0.0/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5f0b1b8fffd414490cd614e5c5bff869/facebook-common-9.0.0/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.facebook.android/facebook-common/9.0.0/e939ccfad899714f51a4f47d06ca2af2d5b7298e/facebook-common-9.0.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.facebook.android/facebook-common/9.0.0/fd22e5398681c833f0acd3acfa12b127094ea0d/facebook-common-9.0.0-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_firebase_firebase_auth_21_0_1_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__com_google_firebase_firebase_auth_21_0_1_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_google_firebase_firebase_auth_21_0_1_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.google.firebase:firebase-auth:21.0.1@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/aa5c9d71e49d94ddd96894f0d2fe3b32/firebase-auth-21.0.1/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/aa5c9d71e49d94ddd96894f0d2fe3b32/firebase-auth-21.0.1/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/aa5c9d71e49d94ddd96894f0d2fe3b32/firebase-auth-21.0.1/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-auth/21.0.1/93cfb8e92221edeece91b286008325e05ab1f53f/firebase-auth-21.0.1-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES />
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__io_perfmark_perfmark_api_0_19_0.xml
+===================================================================
+--- .idea/libraries/Gradle__io_perfmark_perfmark_api_0_19_0.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__io_perfmark_perfmark_api_0_19_0.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: io.perfmark:perfmark-api:0.19.0">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.perfmark/perfmark-api/0.19.0/2bfc352777fa6e27ad1e11d11ea55651ba93236b/perfmark-api-0.19.0.jar!/" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.perfmark/perfmark-api/0.19.0/d01f5a54e54a232c7645450c9fb1e75c5b81007/perfmark-api-0.19.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.perfmark/perfmark-api/0.19.0/ca61d9fa052fd1caef7ccadd9b35fca7cc9184a1/perfmark-api-0.19.0-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_github_TutorialsAndroid_GButton_v1_0_19_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__com_github_TutorialsAndroid_GButton_v1_0_19_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_github_TutorialsAndroid_GButton_v1_0_19_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.github.TutorialsAndroid:GButton:v1.0.19@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b20b6bd25666dbb3046120181f7a7775/GButton-v1.0.19/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b20b6bd25666dbb3046120181f7a7775/GButton-v1.0.19/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b20b6bd25666dbb3046120181f7a7775/GButton-v1.0.19/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.TutorialsAndroid/GButton/v1.0.19/5ab303588ec3a43e7c2a572dbf7adf6d7a56c4ff/GButton-v1.0.19-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__androidx_browser_browser_1_0_0_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__androidx_browser_browser_1_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__androidx_browser_browser_1_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,16 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: androidx.browser:browser:1.0.0@aar">
+-    <ANNOTATIONS>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/985b356e7eb66d1840b74402e932883f/browser-1.0.0/annotations.zip!/" />
+-    </ANNOTATIONS>
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/985b356e7eb66d1840b74402e932883f/browser-1.0.0/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/985b356e7eb66d1840b74402e932883f/browser-1.0.0/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/985b356e7eb66d1840b74402e932883f/browser-1.0.0/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.browser/browser/1.0.0/804dc4c93b5f45da8f72c10a5080dbb21715d813/browser-1.0.0-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_parse_bolts_bolts_tasks_1_4_0.xml
+===================================================================
+--- .idea/libraries/Gradle__com_parse_bolts_bolts_tasks_1_4_0.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_parse_bolts_bolts_tasks_1_4_0.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.parse.bolts:bolts-tasks:1.4.0">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-tasks/1.4.0/d85884acf6810a3bbbecb587f239005cbc846dc4/bolts-tasks-1.4.0.jar!/" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-tasks/1.4.0/eb77c6df1225a4160b636010e791ed9738bae4da/bolts-tasks-1.4.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-tasks/1.4.0/a523a9722ec97e8fc4f015dd50c98cdda8029ba4/bolts-tasks-1.4.0-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__io_grpc_grpc_api_1_28_0.xml
+===================================================================
+--- .idea/libraries/Gradle__io_grpc_grpc_api_1_28_0.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__io_grpc_grpc_api_1_28_0.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: io.grpc:grpc-api:1.28.0">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.grpc/grpc-api/1.28.0/7f429195b2c7b5249594dc62751d6c4228c767b5/grpc-api-1.28.0.jar!/" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.grpc/grpc-api/1.28.0/7f63fa6ac18da29c8ebb1a3dd68f2539c8f42549/grpc-api-1.28.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.grpc/grpc-api/1.28.0/6d766deac367792bae1883c5e62478da4f40d398/grpc-api-1.28.0-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_android_gms_play_services_measurement_sdk_api_19_0_0_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__com_google_android_gms_play_services_measurement_sdk_api_19_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_google_android_gms_play_services_measurement_sdk_api_19_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.google.android.gms:play-services-measurement-sdk-api:19.0.0@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/46fbf8da025caa52b77eca1d883e9d4e/play-services-measurement-sdk-api-19.0.0/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/46fbf8da025caa52b77eca1d883e9d4e/play-services-measurement-sdk-api-19.0.0/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/46fbf8da025caa52b77eca1d883e9d4e/play-services-measurement-sdk-api-19.0.0/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-measurement-sdk-api/19.0.0/c0d58b8efa926b2c607984c54fb3d274490badd1/play-services-measurement-sdk-api-19.0.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES />
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_facebook_android_facebook_login_9_0_0_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__com_facebook_android_facebook_login_9_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_facebook_android_facebook_login_9_0_0_aar.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,15 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.facebook.android:facebook-login:9.0.0@aar">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/390afb86545a6eb03dea2a0f7c76a46b/facebook-login-9.0.0/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/390afb86545a6eb03dea2a0f7c76a46b/facebook-login-9.0.0/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/390afb86545a6eb03dea2a0f7c76a46b/facebook-login-9.0.0/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.facebook.android/facebook-login/9.0.0/b2f04ca49e4ea79f8f653e135cba2e7a4eebaac5/facebook-login-9.0.0-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.facebook.android/facebook-login/9.0.0/578719997b28d17810f7ecbf544c7f54d1a275e3/facebook-login-9.0.0-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_errorprone_error_prone_annotations_2_3_4.xml
+===================================================================
+--- .idea/libraries/Gradle__com_google_errorprone_error_prone_annotations_2_3_4.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
++++ .idea/libraries/Gradle__com_google_errorprone_error_prone_annotations_2_3_4.xml	(revision 314062551a1d0296b5198535c38889621027e50f)
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: com.google.errorprone:error_prone_annotations:2.3.4">
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.3.4/dac170e4594de319655ffb62f41cbd6dbb5e601e/error_prone_annotations-2.3.4.jar!/" />
+-    </CLASSES>
+-    <JAVADOC>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.3.4/fb138d7b7e6995897f9eeeddf6ef0b56e21fc0d5/error_prone_annotations-2.3.4-javadoc.jar!/" />
+-    </JAVADOC>
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.3.4/950adf6dcd7361e3d1e544a6e13b818587f95d14/error_prone_annotations-2.3.4-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
