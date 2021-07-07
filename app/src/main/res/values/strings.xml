@@ -1,4 +1,10 @@
 <resources>
+<!--facebook login-->
+    <string name="facebook_app_id">879577766289201</string>
+    <string name="fb_login_protocol_scheme">fb879577766289201</string>
+
+
+
     <string name="app_name">Iamin</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="textGroupInsert">GroupInsert</string>

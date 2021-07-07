@@ -1,6 +1,7 @@
 package idv.tfp10101.iamin.Data;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -69,6 +70,26 @@ public class HomeDataControl {
 
             // requst
             String jsonString = RemoteAccess.getRometeData(url, new Gson().toJson(jsonObject));
+            /** 匿名內部類別實作TypeToken，抓取 泛型 在呼叫方法 */
+            Type listType = new TypeToken<List<HomeData>>(){}.getType();
+            setLocalHomeDatas(new Gson().fromJson(jsonString, listType));
+        }else {
+            Toast.makeText(context, R.string.textNoNetwork, Toast.LENGTH_SHORT).show();
+        }
+    }
+    //取得團購瀏覽圖片
+    public static void getAllGroupimg(Context context,int GroupID) {
+        // 如果有網路，就進行 request
+        if (RemoteAccess.networkConnected(context)) {
+            // 網址 ＆ Action
+            String url = RemoteAccess.URL_SERVER + "Home";
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("action", "getAllGroupimg");
+            jsonObject.addProperty("groupID",GroupID);
+
+            // requst
+            String jsonString = RemoteAccess.getRometeData(url, new Gson().toJson(jsonObject));
+            //明天記得接回傳圖片
             /** 匿名內部類別實作TypeToken，抓取 泛型 在呼叫方法 */
             Type listType = new TypeToken<List<HomeData>>(){}.getType();
             setLocalHomeDatas(new Gson().fromJson(jsonString, listType));

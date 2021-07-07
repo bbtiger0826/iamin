@@ -15,7 +15,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class MemberControl {
     private static String TAG = "TAG_MemberControl";
 
-    public static void memberRemoteAccess(Context context, Member member, String value) {
+    public static String memberRemoteAccess(Context context, Member member, String value) {
         Log.d(TAG,member.getEmail());
         if (RemoteAccess.networkConnected(context)) {
             String url = RemoteAccess.URL_SERVER + "memberServelt";
@@ -28,35 +28,33 @@ public class MemberControl {
 //                //byte to string
 //                jsonObject.addProperty("imageBase64", Base64.encodeToString(image, Base64.DEFAULT));
 //            }
-            String result = RemoteAccess.getRometeData(url, jsonObject.toString());
-            memberIdSharedPreference(context, result);
+            return RemoteAccess.getRometeData(url, jsonObject.toString());
         } else {
-            Toast.makeText(context, "No network", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "沒有網路", Toast.LENGTH_SHORT).show();
         }
+        return "沒有網路";
     }
 
     //存mebmer_ID到app裡
-    public static void memberIdSharedPreference(Context context, String result) {
+    public static void storeMemberIdSharedPreference(Context context, String result){
         int mySqlMemberId;
         try {
             mySqlMemberId = Integer.parseInt(result);
             SharedPreferences pref = context.getSharedPreferences("member_ID",
                     MODE_PRIVATE);
             pref.edit()
-                    .putInt("member_ID", mySqlMemberId)
+                    .putInt("member_ID",mySqlMemberId)
+                    .putBoolean("Login statue",true)
                     .apply();
         } catch (NumberFormatException ex) {
             ex.printStackTrace();
             mySqlMemberId = 0;
         }
-        Log.d(TAG, mySqlMemberId + "");
-    }
-
-    public static void memberLog(Context context, int mySqlMemberId, String value) {
-        if (mySqlMemberId == 0) {
-            Toast.makeText(context, " failed", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(context, " success", Toast.LENGTH_SHORT).show();
+        Log.d(TAG,mySqlMemberId + "");
+        if (mySqlMemberId == 0){
+            Log.d(TAG,"執行失敗");
+        }else{
+            Log.d(TAG,"執行成功");
         }
     }
 }

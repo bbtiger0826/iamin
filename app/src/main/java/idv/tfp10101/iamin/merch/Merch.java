@@ -1,5 +1,7 @@
 package idv.tfp10101.iamin.merch;
 
+import androidx.annotation.Nullable;
+
 import java.io.Serializable;
 
 public class Merch implements Serializable {
@@ -56,4 +58,18 @@ public class Merch implements Serializable {
     public void setMerchDesc(String merchDesc) {
         this.merchDesc = merchDesc;
     }
+
+//    @Override
+//    public int hashCode() {
+//        return memberId + merchId;
+//    }
+//
+//    @Override
+//    public boolean equals(@Nullable Object obj) {
+//        if (obj instanceof Merch) {
+//            return memberId == ((Merch) obj).memberId && merchId == ((Merch) obj).merchId;
+//        } else {
+//            return super.equals(obj);
+//        }
+//    }
 }
