@@ -112,6 +112,13 @@ public class HomeFragment extends Fragment {
                 return true;
             }
         });
+        //重載時將輸入欄清空
+        swipeRefreshLayout.setOnRefreshListener(() ->{
+            swipeRefreshLayout.setRefreshing(true);
+            searchView.setQuery("",false);
+            showHomeData(localHomeDatas);
+            swipeRefreshLayout.setRefreshing(false);
+        });
 
         //bottomNavigationView.getMenu().setGroupCheckable(0,false,false);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -121,6 +128,7 @@ public class HomeFragment extends Fragment {
                 switch (item.getItemId()){
                     case R.id.no:
                         searchView.setQuery("",false);
+                        showHomeData(localHomeDatas);
                         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                             @Override
                             public boolean onQueryTextSubmit(String query) {
@@ -147,25 +155,26 @@ public class HomeFragment extends Fragment {
                         swipeRefreshLayout.setOnRefreshListener(() -> {
                             //開啟動畫
                             swipeRefreshLayout.setRefreshing(true);
+                            searchView.setQuery("",false);
                             showHomeData(localHomeDatas);
                             swipeRefreshLayout.setRefreshing(false);
                         });
                         Toast.makeText(activity, "未分類", Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.food:
-                         updata(1,localHomeDatas);
+                        chooseCategory(1,localHomeDatas);
                         Toast.makeText(activity, "美食", Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.life:
-                        updata(2,localHomeDatas);
+                        chooseCategory(2,localHomeDatas);
                         Toast.makeText(activity, "生活用品", Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.theerc:
-                        updata(3,localHomeDatas);
+                        chooseCategory(3,localHomeDatas);
                         Toast.makeText(activity, "3C", Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.other:
-                        updata(4,localHomeDatas);
+                        chooseCategory(4,localHomeDatas);
                         Toast.makeText(activity, "其他", Toast.LENGTH_SHORT).show();
                         return true;
                 }
@@ -174,7 +183,7 @@ public class HomeFragment extends Fragment {
         });
     }
     //根據所選的分類下拉更新
-    private void updata(int category_Id,List<HomeData> categoryHomeData){
+    private void chooseCategory(int category_Id,List<HomeData> categoryHomeData){
         searchView.setQuery("",false);
         List<HomeData> selectHomeData = new ArrayList<>();
         for (HomeData category : categoryHomeData){
@@ -232,6 +241,8 @@ public class HomeFragment extends Fragment {
 
     private void findView(View view) {
         bottomNavigationView = view.findViewById(R.id.nv_bar);
+        int bid = bottomNavigationView.getSelectedItemId();
+
         recyclerViewGroup = view.findViewById(R.id.rv_groups);
         recyclerViewGroup.setLayoutManager(new LinearLayoutManager(activity));
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);

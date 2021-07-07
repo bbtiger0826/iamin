@@ -12,6 +12,14 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <SearchView
+            android:id="@+id/searchview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible">
+
+        </SearchView>
+
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/nv_bar"
             android:layout_width="match_parent"
@@ -20,14 +28,6 @@
             android:elevation="0dp"
             app:labelVisibilityMode="labeled"
             app:menu="@menu/nvbar_home" />
-
-        <SearchView
-            android:id="@+id/searchview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="visible">
-
-        </SearchView>
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipeRefreshLayout"
