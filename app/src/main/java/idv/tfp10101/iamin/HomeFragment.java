@@ -19,14 +19,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.protobuf.Empty;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -49,6 +52,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerViewGroup;
     private List<HomeData> localHomeDatas;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private SearchView searchView;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,28 +80,6 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         findView(view);
 
-        //bottomNavigationView.getMenu().setGroupCheckable(0,false,false);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            //bottombar監聽事件
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.food:
-                        Toast.makeText(activity, "美食", Toast.LENGTH_SHORT).show();
-                        return true;
-                    case R.id.theerc:
-                        Toast.makeText(activity, "3C", Toast.LENGTH_SHORT).show();
-                        return true;
-                    case R.id.life:
-                        Toast.makeText(activity, "生活用品", Toast.LENGTH_SHORT).show();
-                        return true;
-                    case R.id.other:
-                        Toast.makeText(activity, "其他", Toast.LENGTH_SHORT).show();
-                        return true;
-                }
-                return false;
-            }
-        });
         //呼叫
         HomeDataControl.getAllHomeData(activity);
         localHomeDatas = HomeDataControl.getLocalHomeDatas();
@@ -105,16 +87,132 @@ public class HomeFragment extends Fragment {
             Toast.makeText(activity, R.string.textNoGroupsFound, Toast.LENGTH_SHORT).show();
         }
 
-
         showHomeData(localHomeDatas);
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            //開啟動畫
-            swipeRefreshLayout.setRefreshing(true);
-            showHomeData(localHomeDatas);
-            swipeRefreshLayout.setRefreshing(false);
+        //輸入監聽
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                List<HomeData> searchHomdData = new ArrayList<>();
+                if (newText.equals("")){
+                    showHomeData(localHomeDatas);
+                }else {
+                    // 搜尋原始資料內有無包含關鍵字(不區別大小寫)
+                    for (HomeData homeData : localHomeDatas) {
+                        if (homeData.getName().toUpperCase().contains(newText.toUpperCase())) {
+                            searchHomdData.add(homeData);
+                        }
+                    }
+                    showHomeData(searchHomdData);
+                }
+                return true;
+            }
         });
 
+        //bottomNavigationView.getMenu().setGroupCheckable(0,false,false);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            //bottombar監聽事件
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.no:
+                        searchView.setQuery("",false);
+                        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                            @Override
+                            public boolean onQueryTextSubmit(String query) {
+                                return false;
+                            }
 
+                            @Override
+                            public boolean onQueryTextChange(String newText) {
+                                List<HomeData> searchHomdData = new ArrayList<>();
+                                if (newText.equals("")){
+                                    showHomeData(localHomeDatas);
+                                }else {
+                                    // 搜尋原始資料內有無包含關鍵字(不區別大小寫)
+                                    for (HomeData homeData : localHomeDatas) {
+                                        if (homeData.getName().toUpperCase().contains(newText.toUpperCase())) {
+                                            searchHomdData.add(homeData);
+                                        }
+                                    }
+                                    showHomeData(searchHomdData);
+                                }
+                                return true;
+                            }
+                        });
+                        swipeRefreshLayout.setOnRefreshListener(() -> {
+                            //開啟動畫
+                            swipeRefreshLayout.setRefreshing(true);
+                            showHomeData(localHomeDatas);
+                            swipeRefreshLayout.setRefreshing(false);
+                        });
+                        Toast.makeText(activity, "未分類", Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.food:
+                         updata(1,localHomeDatas);
+                        Toast.makeText(activity, "美食", Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.life:
+                        updata(2,localHomeDatas);
+                        Toast.makeText(activity, "生活用品", Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.theerc:
+                        updata(3,localHomeDatas);
+                        Toast.makeText(activity, "3C", Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.other:
+                        updata(4,localHomeDatas);
+                        Toast.makeText(activity, "其他", Toast.LENGTH_SHORT).show();
+                        return true;
+                }
+                return false;
+            }
+        });
+    }
+    //根據所選的分類下拉更新
+    private void updata(int category_Id,List<HomeData> categoryHomeData){
+        searchView.setQuery("",false);
+        List<HomeData> selectHomeData = new ArrayList<>();
+        for (HomeData category : categoryHomeData){
+            if (category.getGroup_category_Id() == category_Id){
+                selectHomeData.add(category);
+            }
+        }
+        List<HomeData> searchHomdData = new ArrayList<>();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText.equals("")){
+                    showHomeData(selectHomeData);
+                }else {
+                    // 搜尋原始資料內有無包含關鍵字(不區別大小寫)
+                    for (HomeData homeData : selectHomeData) {
+                        if (homeData.getName().toUpperCase().contains(newText.toUpperCase())) {
+                            searchHomdData.add(homeData);
+                        }
+                    }
+                    showHomeData(searchHomdData);
+                }
+                return true;
+            }
+        });
+        showHomeData(selectHomeData);
+
+        swipeRefreshLayout.setOnRefreshListener(() ->{
+            swipeRefreshLayout.setRefreshing(true);
+            searchView.setQuery("",false);
+            showHomeData(selectHomeData);
+            swipeRefreshLayout.setRefreshing(false);
+        });
     }
 
     private void showHomeData(List<HomeData> localHomeDatas) {
@@ -137,6 +235,7 @@ public class HomeFragment extends Fragment {
         recyclerViewGroup = view.findViewById(R.id.rv_groups);
         recyclerViewGroup.setLayoutManager(new LinearLayoutManager(activity));
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+        searchView = view.findViewById(R.id.searchview);
     }
 
     private class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyHomeDataViewHolder>{
