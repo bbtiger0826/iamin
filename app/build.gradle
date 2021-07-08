@@ -64,4 +64,8 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
     implementation 'com.google.firebase:firebase-storage'
     implementation 'com.google.firebase:firebase-firestore'
+    //pinechart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    //phone Auth
+    implementation 'androidx.browser:browser:1.3.0'
 }

@@ -8,31 +8,28 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import java.sql.Timestamp;
+
 import idv.tfp10101.iamin.network.RemoteAccess;
 
 import static android.content.Context.MODE_PRIVATE;
 
 public class MemberControl {
-    private static String TAG = "TAG_MemberControl";
+    private final static String TAG = "TAG_MemberControl";
 
-    public static String memberRemoteAccess(Context context, Member member, String value) {
-        Log.d(TAG,member.getEmail());
+    public static String memberRemoteAccess(Context context , Member member, String value) {
         if (RemoteAccess.networkConnected(context)) {
+
             String url = RemoteAccess.URL_SERVER + "memberServelt";
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("action", value);
             jsonObject.addProperty("member", new Gson().toJson(member));
-            //TODO logIn
-//            // 有圖才上傳
-//            if (image != null) {
-//                //byte to string
-//                jsonObject.addProperty("imageBase64", Base64.encodeToString(image, Base64.DEFAULT));
-//            }
+
             return RemoteAccess.getRometeData(url, jsonObject.toString());
         } else {
             Toast.makeText(context, "沒有網路", Toast.LENGTH_SHORT).show();
+            return "";
         }
-        return "沒有網路";
     }
 
     //存mebmer_ID到app裡
@@ -57,4 +54,15 @@ public class MemberControl {
             Log.d(TAG,"執行成功");
         }
     }
+
+    public static void setMemberData(Member member, JsonObject setter){
+        member.setEmail(setter.get("EMAIL").getAsString());
+        member.setNickname(setter.get("NICKNAME").getAsString());
+        member.setPassword(setter.get("PASSWORD").getAsString());
+        member.setPhoneNumber(setter.get("PHONE").getAsString());
+        member.setRating(Double.parseDouble(setter.get("RATING").getAsString()));
+        member.setFollow_count(Integer.parseInt(setter.get("FOLLOW_COUNT").getAsString()));
+        member.setUpdateDate(Timestamp.valueOf(setter.get("UPDATE_TIME").getAsString()));
+    }
+
 }
