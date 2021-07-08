@@ -1,0 +1,548 @@
+Index: app/src/main/java/idv/tfp10101/iamin/network/RemoteAccess.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package idv.tfp10101.iamin.network;\n\nimport android.content.Context;\nimport android.graphics.Bitmap;\nimport android.net.ConnectivityManager;\nimport android.net.Network;\nimport android.net.NetworkCapabilities;\nimport android.net.NetworkInfo;\nimport android.os.Build;\nimport android.util.Log;\n\nimport java.util.concurrent.ExecutionException;\nimport java.util.concurrent.ExecutorService;\nimport java.util.concurrent.Future;\nimport java.util.concurrent.FutureTask;\n\nimport idv.tfp10101.iamin.Constants;\n\n\n/**\n * Server連線 Action總表\n */\npublic class RemoteAccess {\n    // 根網址\n    public static String URL_SERVER = \"http://10.0.2.2:8080/iamin_JavaServlet/\";\n    //實機測試\n//    public static String URL_SERVER = \"http://192.168.1.102:8080/iamin_JavaServlet/\";\n    //  test\n    /**\n     * (Json)抓取server資料\n     * @param url\n     * @param requst\n     * @return\n     */\n\n    // getRometeData 字打錯了 getRemoteData才對\n    public static String getRometeData(String url, String requst) {\n        JsonCallable jsonCallable = new JsonCallable(url, requst);\n        // callable 轉 Runnable (FutureTask<> -> Runnable的子代)\n        FutureTask<String> task = new FutureTask<>(jsonCallable);\n        Thread thread = new Thread(task);\n        thread.start();\n        try {\n            return task.get();\n        } catch (Exception e) {\n            Log.e(Constants.TAG, \"getRemoteData(): \" + e.toString());\n            task.cancel(true);\n            return null;\n        }\n    }\n\n    /**\n     * (Images)抓取server資料\n     * @param url\n//     * @param requst\n     * @return\n     */\n//    public static List<byte[]> getRemoteImages(String url, String requst) {\n//\n//    }\n\n    // 適用取得一張圖\n    public static Bitmap getRemoteImage(String url, String outStr) {\n        ImageCallable callable = new ImageCallable(url, outStr);\n        FutureTask<Bitmap> task = new FutureTask<>(callable);\n        Thread thread = new Thread(task);\n        thread.start();\n        try {\n            return task.get();\n        } catch (Exception e) {\n            task.cancel(true);\n            return null;\n        }\n    }\n    // 搭配Executor取圖 thread pool\n    public static Bitmap getRemoteImage(String url, String outStr, ExecutorService executor) {\n\n        ImageCallable callable = new ImageCallable(url, outStr);\n        //每一個提交都會產生一個future\n        Future<Bitmap> future = executor.submit(callable);\n        Bitmap bitmap = null;\n        try {\n            bitmap = future.get();\n        } catch (ExecutionException | InterruptedException e) {\n            future.cancel(true);\n        }\n        return bitmap;\n    }\n\n    /**\n     * 檢查是否有網路連線\n     * API 23 以上：\n     * ConnectivityManager -> Network -> NetworkCapabilities\n     *\n     * API 23 下：\n     * ConnectivityManager -> NetworkInfo\n     * @param context\n     * @return\n     */\n    public static boolean networkConnected(Context context) {\n        // Connectivity(連接性)\n        ConnectivityManager CM = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);\n        if (CM != null) {\n            // VERSION > API 23\n            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {\n                Network network = CM.getActiveNetwork(); /** 需要權限 */\n                // NetworkCapabilities(網絡能力)\n                NetworkCapabilities networkCapabilities = CM.getNetworkCapabilities(network);\n                // (Wifi 行動網路 有線網路)\n                if (networkCapabilities != null) {\n                    boolean wifi = networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI);\n                    boolean cellular = networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI);\n                    boolean ethernet = networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET);\n                    Log.d(Constants.TAG, \"TRANSPORT_WIFI: \" + String.valueOf(wifi));\n                    Log.d(Constants.TAG, \"TRANSPORT_CELLULAR: \" + String.valueOf(cellular));\n                    Log.d(Constants.TAG, \"TRANSPORT_ETHERNET: \" + String.valueOf(ethernet));\n                    return wifi || cellular || ethernet;\n                }\n            }else {\n                NetworkInfo networkInfo = CM.getActiveNetworkInfo();\n                return networkInfo != null && networkInfo.isConnected();\n            }\n        }\n        Log.e(Constants.TAG, \"ConnectivityManager Is Null\");\n        return false;\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/idv/tfp10101/iamin/network/RemoteAccess.java	(revision f4e12dff6c0d94fa575c06c5ec57032121658ee5)
++++ app/src/main/java/idv/tfp10101/iamin/network/RemoteAccess.java	(date 1625726088417)
+@@ -22,9 +22,9 @@
+  */
+ public class RemoteAccess {
+     // 根網址
+-    public static String URL_SERVER = "http://10.0.2.2:8080/iamin_JavaServlet/";
++//    public static String URL_SERVER = "http://10.0.2.2:8080/iamin_JavaServlet/";
+     //實機測試
+-//    public static String URL_SERVER = "http://192.168.1.102:8080/iamin_JavaServlet/";
++    public static String URL_SERVER = "http://192.168.0.11:8080/iamin_JavaServlet/";
+     //  test
+     /**
+      * (Json)抓取server資料
+Index: .idea/libraries/Gradle__androidx_browser_browser_1_0_0_aar.xml
+===================================================================
+--- .idea/libraries/Gradle__androidx_browser_browser_1_0_0_aar.xml	(revision f4e12dff6c0d94fa575c06c5ec57032121658ee5)
++++ .idea/libraries/Gradle__androidx_browser_browser_1_0_0_aar.xml	(revision f4e12dff6c0d94fa575c06c5ec57032121658ee5)
+@@ -1,16 +0,0 @@
+-<component name="libraryTable">
+-  <library name="Gradle: androidx.browser:browser:1.0.0@aar">
+-    <ANNOTATIONS>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/985b356e7eb66d1840b74402e932883f/browser-1.0.0/annotations.zip!/" />
+-    </ANNOTATIONS>
+-    <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/985b356e7eb66d1840b74402e932883f/browser-1.0.0/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/985b356e7eb66d1840b74402e932883f/browser-1.0.0/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/985b356e7eb66d1840b74402e932883f/browser-1.0.0/AndroidManifest.xml" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.browser/browser/1.0.0/804dc4c93b5f45da8f72c10a5080dbb21715d813/browser-1.0.0-sources.jar!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_android_gms_play_services_ads_identifier_17_0_0_aar.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"libraryTable\">\n  <library name=\"Gradle: com.google.android.gms:play-services-ads-identifier:17.0.0@aar\">\n    <CLASSES>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3f8b691acb1381846d75ca1ccd1e6932/play-services-ads-identifier-17.0.0/jars/classes.jar!/\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3f8b691acb1381846d75ca1ccd1e6932/play-services-ads-identifier-17.0.0/res\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3f8b691acb1381846d75ca1ccd1e6932/play-services-ads-identifier-17.0.0/AndroidManifest.xml\" />\n    </CLASSES>\n    <JAVADOC />\n    <SOURCES />\n  </library>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/libraries/Gradle__com_google_android_gms_play_services_ads_identifier_17_0_0_aar.xml	(revision f4e12dff6c0d94fa575c06c5ec57032121658ee5)
++++ .idea/libraries/Gradle__com_google_android_gms_play_services_ads_identifier_17_0_0_aar.xml	(date 1625726088446)
+@@ -4,6 +4,9 @@
+       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3f8b691acb1381846d75ca1ccd1e6932/play-services-ads-identifier-17.0.0/jars/classes.jar!/" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3f8b691acb1381846d75ca1ccd1e6932/play-services-ads-identifier-17.0.0/res" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3f8b691acb1381846d75ca1ccd1e6932/play-services-ads-identifier-17.0.0/AndroidManifest.xml" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3f8b691acb1381846d75ca1ccd1e6932/jetified-play-services-ads-identifier-17.0.0/AndroidManifest.xml" />
++      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3f8b691acb1381846d75ca1ccd1e6932/jetified-play-services-ads-identifier-17.0.0/jars/classes.jar!/" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3f8b691acb1381846d75ca1ccd1e6932/jetified-play-services-ads-identifier-17.0.0/res" />
+     </CLASSES>
+     <JAVADOC />
+     <SOURCES />
+Index: .idea/libraries/Gradle__com_google_android_gms_play_services_measurement_impl_19_0_0_aar.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"libraryTable\">\n  <library name=\"Gradle: com.google.android.gms:play-services-measurement-impl:19.0.0@aar\">\n    <CLASSES>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/408f5abf221494e347df64f8bd007d95/play-services-measurement-impl-19.0.0/jars/classes.jar!/\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/408f5abf221494e347df64f8bd007d95/play-services-measurement-impl-19.0.0/res\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/408f5abf221494e347df64f8bd007d95/play-services-measurement-impl-19.0.0/AndroidManifest.xml\" />\n    </CLASSES>\n    <JAVADOC>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-measurement-impl/19.0.0/449d5453b617f030923b1eda6697c8da4661d8f0/play-services-measurement-impl-19.0.0-javadoc.jar!/\" />\n    </JAVADOC>\n    <SOURCES />\n  </library>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/libraries/Gradle__com_google_android_gms_play_services_measurement_impl_19_0_0_aar.xml	(revision f4e12dff6c0d94fa575c06c5ec57032121658ee5)
++++ .idea/libraries/Gradle__com_google_android_gms_play_services_measurement_impl_19_0_0_aar.xml	(date 1625726088451)
+@@ -4,6 +4,9 @@
+       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/408f5abf221494e347df64f8bd007d95/play-services-measurement-impl-19.0.0/jars/classes.jar!/" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/408f5abf221494e347df64f8bd007d95/play-services-measurement-impl-19.0.0/res" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/408f5abf221494e347df64f8bd007d95/play-services-measurement-impl-19.0.0/AndroidManifest.xml" />
++      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/408f5abf221494e347df64f8bd007d95/jetified-play-services-measurement-impl-19.0.0/jars/classes.jar!/" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/408f5abf221494e347df64f8bd007d95/jetified-play-services-measurement-impl-19.0.0/AndroidManifest.xml" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/408f5abf221494e347df64f8bd007d95/jetified-play-services-measurement-impl-19.0.0/res" />
+     </CLASSES>
+     <JAVADOC>
+       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-measurement-impl/19.0.0/449d5453b617f030923b1eda6697c8da4661d8f0/play-services-measurement-impl-19.0.0-javadoc.jar!/" />
+Index: .idea/libraries/Gradle__com_google_android_gms_play_services_measurement_19_0_0_aar.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"libraryTable\">\n  <library name=\"Gradle: com.google.android.gms:play-services-measurement:19.0.0@aar\">\n    <CLASSES>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a2984f0210723d09e67626552b7d859d/play-services-measurement-19.0.0/jars/classes.jar!/\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a2984f0210723d09e67626552b7d859d/play-services-measurement-19.0.0/res\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a2984f0210723d09e67626552b7d859d/play-services-measurement-19.0.0/AndroidManifest.xml\" />\n    </CLASSES>\n    <JAVADOC>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-measurement/19.0.0/2a0cba8dbe8c53b801367204f9d4cb948ac2ea23/play-services-measurement-19.0.0-javadoc.jar!/\" />\n    </JAVADOC>\n    <SOURCES />\n  </library>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/libraries/Gradle__com_google_android_gms_play_services_measurement_19_0_0_aar.xml	(revision f4e12dff6c0d94fa575c06c5ec57032121658ee5)
++++ .idea/libraries/Gradle__com_google_android_gms_play_services_measurement_19_0_0_aar.xml	(date 1625726088430)
+@@ -4,6 +4,9 @@
+       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a2984f0210723d09e67626552b7d859d/play-services-measurement-19.0.0/jars/classes.jar!/" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a2984f0210723d09e67626552b7d859d/play-services-measurement-19.0.0/res" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a2984f0210723d09e67626552b7d859d/play-services-measurement-19.0.0/AndroidManifest.xml" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a2984f0210723d09e67626552b7d859d/jetified-play-services-measurement-19.0.0/res" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a2984f0210723d09e67626552b7d859d/jetified-play-services-measurement-19.0.0/AndroidManifest.xml" />
++      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a2984f0210723d09e67626552b7d859d/jetified-play-services-measurement-19.0.0/jars/classes.jar!/" />
+     </CLASSES>
+     <JAVADOC>
+       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-measurement/19.0.0/2a0cba8dbe8c53b801367204f9d4cb948ac2ea23/play-services-measurement-19.0.0-javadoc.jar!/" />
+Index: .idea/libraries/Gradle__io_grpc_grpc_android_1_28_0_aar.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"libraryTable\">\n  <library name=\"Gradle: io.grpc:grpc-android:1.28.0@aar\">\n    <CLASSES>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/626f1ca1b27148be4510e1a863e73171/grpc-android-1.28.0/jars/classes.jar!/\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/626f1ca1b27148be4510e1a863e73171/grpc-android-1.28.0/res\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/626f1ca1b27148be4510e1a863e73171/grpc-android-1.28.0/AndroidManifest.xml\" />\n    </CLASSES>\n    <JAVADOC>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.grpc/grpc-android/1.28.0/e7c3f4a90a5862818fc0ff52806ab2b2986bea67/grpc-android-1.28.0-javadoc.jar!/\" />\n    </JAVADOC>\n    <SOURCES>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.grpc/grpc-android/1.28.0/64355636f33bb77e4e0677e3de8ba7a48d6a74d/grpc-android-1.28.0-sources.jar!/\" />\n    </SOURCES>\n  </library>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/libraries/Gradle__io_grpc_grpc_android_1_28_0_aar.xml	(revision f4e12dff6c0d94fa575c06c5ec57032121658ee5)
++++ .idea/libraries/Gradle__io_grpc_grpc_android_1_28_0_aar.xml	(date 1625726088477)
+@@ -4,6 +4,9 @@
+       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/626f1ca1b27148be4510e1a863e73171/grpc-android-1.28.0/jars/classes.jar!/" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/626f1ca1b27148be4510e1a863e73171/grpc-android-1.28.0/res" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/626f1ca1b27148be4510e1a863e73171/grpc-android-1.28.0/AndroidManifest.xml" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/626f1ca1b27148be4510e1a863e73171/jetified-grpc-android-1.28.0/res" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/626f1ca1b27148be4510e1a863e73171/jetified-grpc-android-1.28.0/AndroidManifest.xml" />
++      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/626f1ca1b27148be4510e1a863e73171/jetified-grpc-android-1.28.0/jars/classes.jar!/" />
+     </CLASSES>
+     <JAVADOC>
+       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.grpc/grpc-android/1.28.0/e7c3f4a90a5862818fc0ff52806ab2b2986bea67/grpc-android-1.28.0-javadoc.jar!/" />
+Index: app/proguard-rules.pro
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/proguard-rules.pro	(date 1624419695000)
++++ app/proguard-rules.pro	(date 1624419695000)
+@@ -0,0 +1,21 @@
++# Add project specific ProGuard rules here.
++# You can control the set of applied configuration files using the
++# proguardFiles setting in build.gradle.
++#
++# For more details, see
++#   http://developer.android.com/guide/developing/tools/proguard.html
++
++# If your project uses WebView with JS, uncomment the following
++# and specify the fully qualified class name to the JavaScript interface
++# class:
++#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
++#   public *;
++#}
++
++# Uncomment this to preserve the line number information for
++# debugging stack traces.
++#-keepattributes SourceFile,LineNumberTable
++
++# If you keep the line number information, uncomment this to
++# hide the original source file name.
++#-renamesourcefileattribute SourceFile
+\ No newline at end of file
+Index: .idea/libraries/Gradle__com_google_android_gms_play_services_safetynet_17_0_0_aar.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"libraryTable\">\n  <library name=\"Gradle: com.google.android.gms:play-services-safetynet:17.0.0@aar\">\n    <CLASSES>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9ace64ef20aabba8ff19d02c5098c10f/play-services-safetynet-17.0.0/jars/classes.jar!/\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9ace64ef20aabba8ff19d02c5098c10f/play-services-safetynet-17.0.0/res\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9ace64ef20aabba8ff19d02c5098c10f/play-services-safetynet-17.0.0/AndroidManifest.xml\" />\n    </CLASSES>\n    <JAVADOC />\n    <SOURCES />\n  </library>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/libraries/Gradle__com_google_android_gms_play_services_safetynet_17_0_0_aar.xml	(revision f4e12dff6c0d94fa575c06c5ec57032121658ee5)
++++ .idea/libraries/Gradle__com_google_android_gms_play_services_safetynet_17_0_0_aar.xml	(date 1625726088454)
+@@ -4,6 +4,9 @@
+       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9ace64ef20aabba8ff19d02c5098c10f/play-services-safetynet-17.0.0/jars/classes.jar!/" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9ace64ef20aabba8ff19d02c5098c10f/play-services-safetynet-17.0.0/res" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9ace64ef20aabba8ff19d02c5098c10f/play-services-safetynet-17.0.0/AndroidManifest.xml" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9ace64ef20aabba8ff19d02c5098c10f/jetified-play-services-safetynet-17.0.0/AndroidManifest.xml" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9ace64ef20aabba8ff19d02c5098c10f/jetified-play-services-safetynet-17.0.0/res" />
++      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9ace64ef20aabba8ff19d02c5098c10f/jetified-play-services-safetynet-17.0.0/jars/classes.jar!/" />
+     </CLASSES>
+     <JAVADOC />
+     <SOURCES />
+Index: .idea/libraries/Gradle__com_google_android_gms_play_services_tasks_17_0_0_aar.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"libraryTable\">\n  <library name=\"Gradle: com.google.android.gms:play-services-tasks:17.0.0@aar\">\n    <CLASSES>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2bf10c92d9153cfb2c1ea68f8039b5a6/play-services-tasks-17.0.0/jars/classes.jar!/\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2bf10c92d9153cfb2c1ea68f8039b5a6/play-services-tasks-17.0.0/res\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2bf10c92d9153cfb2c1ea68f8039b5a6/play-services-tasks-17.0.0/AndroidManifest.xml\" />\n    </CLASSES>\n    <JAVADOC />\n    <SOURCES />\n  </library>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/libraries/Gradle__com_google_android_gms_play_services_tasks_17_0_0_aar.xml	(revision f4e12dff6c0d94fa575c06c5ec57032121658ee5)
++++ .idea/libraries/Gradle__com_google_android_gms_play_services_tasks_17_0_0_aar.xml	(date 1625726088469)
+@@ -4,6 +4,9 @@
+       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2bf10c92d9153cfb2c1ea68f8039b5a6/play-services-tasks-17.0.0/jars/classes.jar!/" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2bf10c92d9153cfb2c1ea68f8039b5a6/play-services-tasks-17.0.0/res" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2bf10c92d9153cfb2c1ea68f8039b5a6/play-services-tasks-17.0.0/AndroidManifest.xml" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2bf10c92d9153cfb2c1ea68f8039b5a6/jetified-play-services-tasks-17.0.0/res" />
++      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2bf10c92d9153cfb2c1ea68f8039b5a6/jetified-play-services-tasks-17.0.0/jars/classes.jar!/" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2bf10c92d9153cfb2c1ea68f8039b5a6/jetified-play-services-tasks-17.0.0/AndroidManifest.xml" />
+     </CLASSES>
+     <JAVADOC />
+     <SOURCES />
+Index: .idea/libraries/Gradle__com_google_firebase_firebase_storage_20_0_0_aar.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"libraryTable\">\n  <library name=\"Gradle: com.google.firebase:firebase-storage:20.0.0@aar\">\n    <CLASSES>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f2e60f1f93a0efa46b835b7590f585a0/firebase-storage-20.0.0/jars/classes.jar!/\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f2e60f1f93a0efa46b835b7590f585a0/firebase-storage-20.0.0/res\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f2e60f1f93a0efa46b835b7590f585a0/firebase-storage-20.0.0/AndroidManifest.xml\" />\n    </CLASSES>\n    <JAVADOC>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-storage/20.0.0/239b2d5bd0105d8920ba3d472ab0f437c1fc388a/firebase-storage-20.0.0-javadoc.jar!/\" />\n    </JAVADOC>\n    <SOURCES>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-storage/20.0.0/44d9a9237515726384d0491c44fd2c1a4d383ddc/firebase-storage-20.0.0-sources.jar!/\" />\n    </SOURCES>\n  </library>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/libraries/Gradle__com_google_firebase_firebase_storage_20_0_0_aar.xml	(revision f4e12dff6c0d94fa575c06c5ec57032121658ee5)
++++ .idea/libraries/Gradle__com_google_firebase_firebase_storage_20_0_0_aar.xml	(date 1625726088474)
+@@ -4,6 +4,9 @@
+       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f2e60f1f93a0efa46b835b7590f585a0/firebase-storage-20.0.0/jars/classes.jar!/" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f2e60f1f93a0efa46b835b7590f585a0/firebase-storage-20.0.0/res" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f2e60f1f93a0efa46b835b7590f585a0/firebase-storage-20.0.0/AndroidManifest.xml" />
++      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f2e60f1f93a0efa46b835b7590f585a0/jetified-firebase-storage-20.0.0/jars/classes.jar!/" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f2e60f1f93a0efa46b835b7590f585a0/jetified-firebase-storage-20.0.0/AndroidManifest.xml" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f2e60f1f93a0efa46b835b7590f585a0/jetified-firebase-storage-20.0.0/res" />
+     </CLASSES>
+     <JAVADOC>
+       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-storage/20.0.0/239b2d5bd0105d8920ba3d472ab0f437c1fc388a/firebase-storage-20.0.0-javadoc.jar!/" />
+Index: .idea/libraries/Gradle__com_google_android_gms_play_services_auth_api_phone_17_4_0_aar.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"libraryTable\">\n  <library name=\"Gradle: com.google.android.gms:play-services-auth-api-phone:17.4.0@aar\">\n    <CLASSES>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/44f8d1ee0be09a27bb098a5daf51c63a/play-services-auth-api-phone-17.4.0/jars/classes.jar!/\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/44f8d1ee0be09a27bb098a5daf51c63a/play-services-auth-api-phone-17.4.0/res\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/44f8d1ee0be09a27bb098a5daf51c63a/play-services-auth-api-phone-17.4.0/AndroidManifest.xml\" />\n    </CLASSES>\n    <JAVADOC>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-auth-api-phone/17.4.0/b6b7f35110232b40de7a1374921fcff1eaa864ba/play-services-auth-api-phone-17.4.0-javadoc.jar!/\" />\n    </JAVADOC>\n    <SOURCES />\n  </library>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/libraries/Gradle__com_google_android_gms_play_services_auth_api_phone_17_4_0_aar.xml	(revision f4e12dff6c0d94fa575c06c5ec57032121658ee5)
++++ .idea/libraries/Gradle__com_google_android_gms_play_services_auth_api_phone_17_4_0_aar.xml	(date 1625726088460)
+@@ -4,6 +4,9 @@
+       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/44f8d1ee0be09a27bb098a5daf51c63a/play-services-auth-api-phone-17.4.0/jars/classes.jar!/" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/44f8d1ee0be09a27bb098a5daf51c63a/play-services-auth-api-phone-17.4.0/res" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/44f8d1ee0be09a27bb098a5daf51c63a/play-services-auth-api-phone-17.4.0/AndroidManifest.xml" />
++      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/44f8d1ee0be09a27bb098a5daf51c63a/jetified-play-services-auth-api-phone-17.4.0/jars/classes.jar!/" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/44f8d1ee0be09a27bb098a5daf51c63a/jetified-play-services-auth-api-phone-17.4.0/AndroidManifest.xml" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/44f8d1ee0be09a27bb098a5daf51c63a/jetified-play-services-auth-api-phone-17.4.0/res" />
+     </CLASSES>
+     <JAVADOC>
+       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-auth-api-phone/17.4.0/b6b7f35110232b40de7a1374921fcff1eaa864ba/play-services-auth-api-phone-17.4.0-javadoc.jar!/" />
+Index: .idea/libraries/Gradle__com_google_android_gms_play_services_measurement_base_19_0_0_aar.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"libraryTable\">\n  <library name=\"Gradle: com.google.android.gms:play-services-measurement-base:19.0.0@aar\">\n    <CLASSES>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/961ef467297b48609bdf031ab55e64a9/play-services-measurement-base-19.0.0/jars/classes.jar!/\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/961ef467297b48609bdf031ab55e64a9/play-services-measurement-base-19.0.0/res\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/961ef467297b48609bdf031ab55e64a9/play-services-measurement-base-19.0.0/AndroidManifest.xml\" />\n    </CLASSES>\n    <JAVADOC>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-measurement-base/19.0.0/c0d58b8efa926b2c607984c54fb3d274490badd1/play-services-measurement-base-19.0.0-javadoc.jar!/\" />\n    </JAVADOC>\n    <SOURCES />\n  </library>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/libraries/Gradle__com_google_android_gms_play_services_measurement_base_19_0_0_aar.xml	(revision f4e12dff6c0d94fa575c06c5ec57032121658ee5)
++++ .idea/libraries/Gradle__com_google_android_gms_play_services_measurement_base_19_0_0_aar.xml	(date 1625726088472)
+@@ -4,6 +4,9 @@
+       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/961ef467297b48609bdf031ab55e64a9/play-services-measurement-base-19.0.0/jars/classes.jar!/" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/961ef467297b48609bdf031ab55e64a9/play-services-measurement-base-19.0.0/res" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/961ef467297b48609bdf031ab55e64a9/play-services-measurement-base-19.0.0/AndroidManifest.xml" />
++      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/961ef467297b48609bdf031ab55e64a9/jetified-play-services-measurement-base-19.0.0/jars/classes.jar!/" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/961ef467297b48609bdf031ab55e64a9/jetified-play-services-measurement-base-19.0.0/res" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/961ef467297b48609bdf031ab55e64a9/jetified-play-services-measurement-base-19.0.0/AndroidManifest.xml" />
+     </CLASSES>
+     <JAVADOC>
+       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-measurement-base/19.0.0/c0d58b8efa926b2c607984c54fb3d274490badd1/play-services-measurement-base-19.0.0-javadoc.jar!/" />
+Index: .idea/libraries/Gradle__com_google_firebase_firebase_components_17_0_0_aar.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"libraryTable\">\n  <library name=\"Gradle: com.google.firebase:firebase-components:17.0.0@aar\">\n    <CLASSES>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1e26be816dae9ed47e50db3e9b1d16b0/firebase-components-17.0.0/jars/classes.jar!/\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1e26be816dae9ed47e50db3e9b1d16b0/firebase-components-17.0.0/res\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1e26be816dae9ed47e50db3e9b1d16b0/firebase-components-17.0.0/AndroidManifest.xml\" />\n    </CLASSES>\n    <JAVADOC>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-components/17.0.0/9e60bbf61b1c71e0b01a3e959f2e2111b51f3c83/firebase-components-17.0.0-javadoc.jar!/\" />\n    </JAVADOC>\n    <SOURCES>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-components/17.0.0/15fad94dd3f9b6ecf5e03a5a7c08732f8ef3a5be/firebase-components-17.0.0-sources.jar!/\" />\n    </SOURCES>\n  </library>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/libraries/Gradle__com_google_firebase_firebase_components_17_0_0_aar.xml	(revision f4e12dff6c0d94fa575c06c5ec57032121658ee5)
++++ .idea/libraries/Gradle__com_google_firebase_firebase_components_17_0_0_aar.xml	(date 1625726088457)
+@@ -4,6 +4,9 @@
+       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1e26be816dae9ed47e50db3e9b1d16b0/firebase-components-17.0.0/jars/classes.jar!/" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1e26be816dae9ed47e50db3e9b1d16b0/firebase-components-17.0.0/res" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1e26be816dae9ed47e50db3e9b1d16b0/firebase-components-17.0.0/AndroidManifest.xml" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1e26be816dae9ed47e50db3e9b1d16b0/jetified-firebase-components-17.0.0/res" />
++      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1e26be816dae9ed47e50db3e9b1d16b0/jetified-firebase-components-17.0.0/jars/classes.jar!/" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1e26be816dae9ed47e50db3e9b1d16b0/jetified-firebase-components-17.0.0/AndroidManifest.xml" />
+     </CLASSES>
+     <JAVADOC>
+       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-components/17.0.0/9e60bbf61b1c71e0b01a3e959f2e2111b51f3c83/firebase-components-17.0.0-javadoc.jar!/" />
+Index: .idea/libraries/Gradle__com_google_firebase_firebase_installations_interop_17_0_0_aar.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"libraryTable\">\n  <library name=\"Gradle: com.google.firebase:firebase-installations-interop:17.0.0@aar\">\n    <CLASSES>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/629373d4bbcff08143d7a9d12d28a65a/firebase-installations-interop-17.0.0/jars/classes.jar!/\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/629373d4bbcff08143d7a9d12d28a65a/firebase-installations-interop-17.0.0/res\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/629373d4bbcff08143d7a9d12d28a65a/firebase-installations-interop-17.0.0/AndroidManifest.xml\" />\n    </CLASSES>\n    <JAVADOC>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-installations-interop/17.0.0/ac6ab4866e0eefc2f4aa88b449b5c615939c3545/firebase-installations-interop-17.0.0-javadoc.jar!/\" />\n    </JAVADOC>\n    <SOURCES />\n  </library>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/libraries/Gradle__com_google_firebase_firebase_installations_interop_17_0_0_aar.xml	(revision f4e12dff6c0d94fa575c06c5ec57032121658ee5)
++++ .idea/libraries/Gradle__com_google_firebase_firebase_installations_interop_17_0_0_aar.xml	(date 1625726088435)
+@@ -4,6 +4,9 @@
+       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/629373d4bbcff08143d7a9d12d28a65a/firebase-installations-interop-17.0.0/jars/classes.jar!/" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/629373d4bbcff08143d7a9d12d28a65a/firebase-installations-interop-17.0.0/res" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/629373d4bbcff08143d7a9d12d28a65a/firebase-installations-interop-17.0.0/AndroidManifest.xml" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/629373d4bbcff08143d7a9d12d28a65a/jetified-firebase-installations-interop-17.0.0/AndroidManifest.xml" />
++      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/629373d4bbcff08143d7a9d12d28a65a/jetified-firebase-installations-interop-17.0.0/jars/classes.jar!/" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/629373d4bbcff08143d7a9d12d28a65a/jetified-firebase-installations-interop-17.0.0/res" />
+     </CLASSES>
+     <JAVADOC>
+       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-installations-interop/17.0.0/ac6ab4866e0eefc2f4aa88b449b5c615939c3545/firebase-installations-interop-17.0.0-javadoc.jar!/" />
+Index: .idea/libraries/Gradle__com_google_firebase_firebase_measurement_connector_19_0_0_aar.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"libraryTable\">\n  <library name=\"Gradle: com.google.firebase:firebase-measurement-connector:19.0.0@aar\">\n    <CLASSES>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/886b72104344a81ba4682099cc09e6f4/firebase-measurement-connector-19.0.0/jars/classes.jar!/\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/886b72104344a81ba4682099cc09e6f4/firebase-measurement-connector-19.0.0/res\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/886b72104344a81ba4682099cc09e6f4/firebase-measurement-connector-19.0.0/AndroidManifest.xml\" />\n    </CLASSES>\n    <JAVADOC>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-measurement-connector/19.0.0/c0d58b8efa926b2c607984c54fb3d274490badd1/firebase-measurement-connector-19.0.0-javadoc.jar!/\" />\n    </JAVADOC>\n    <SOURCES />\n  </library>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/libraries/Gradle__com_google_firebase_firebase_measurement_connector_19_0_0_aar.xml	(revision f4e12dff6c0d94fa575c06c5ec57032121658ee5)
++++ .idea/libraries/Gradle__com_google_firebase_firebase_measurement_connector_19_0_0_aar.xml	(date 1625726088485)
+@@ -4,6 +4,9 @@
+       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/886b72104344a81ba4682099cc09e6f4/firebase-measurement-connector-19.0.0/jars/classes.jar!/" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/886b72104344a81ba4682099cc09e6f4/firebase-measurement-connector-19.0.0/res" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/886b72104344a81ba4682099cc09e6f4/firebase-measurement-connector-19.0.0/AndroidManifest.xml" />
++      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/886b72104344a81ba4682099cc09e6f4/jetified-firebase-measurement-connector-19.0.0/jars/classes.jar!/" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/886b72104344a81ba4682099cc09e6f4/jetified-firebase-measurement-connector-19.0.0/AndroidManifest.xml" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/886b72104344a81ba4682099cc09e6f4/jetified-firebase-measurement-connector-19.0.0/res" />
+     </CLASSES>
+     <JAVADOC>
+       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-measurement-connector/19.0.0/c0d58b8efa926b2c607984c54fb3d274490badd1/firebase-measurement-connector-19.0.0-javadoc.jar!/" />
+Index: .idea/libraries/Gradle__com_google_android_gms_play_services_measurement_sdk_api_19_0_0_aar.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"libraryTable\">\n  <library name=\"Gradle: com.google.android.gms:play-services-measurement-sdk-api:19.0.0@aar\">\n    <CLASSES>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/46fbf8da025caa52b77eca1d883e9d4e/play-services-measurement-sdk-api-19.0.0/jars/classes.jar!/\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/46fbf8da025caa52b77eca1d883e9d4e/play-services-measurement-sdk-api-19.0.0/res\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/46fbf8da025caa52b77eca1d883e9d4e/play-services-measurement-sdk-api-19.0.0/AndroidManifest.xml\" />\n    </CLASSES>\n    <JAVADOC>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-measurement-sdk-api/19.0.0/c0d58b8efa926b2c607984c54fb3d274490badd1/play-services-measurement-sdk-api-19.0.0-javadoc.jar!/\" />\n    </JAVADOC>\n    <SOURCES />\n  </library>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/libraries/Gradle__com_google_android_gms_play_services_measurement_sdk_api_19_0_0_aar.xml	(revision f4e12dff6c0d94fa575c06c5ec57032121658ee5)
++++ .idea/libraries/Gradle__com_google_android_gms_play_services_measurement_sdk_api_19_0_0_aar.xml	(date 1625726088466)
+@@ -4,6 +4,9 @@
+       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/46fbf8da025caa52b77eca1d883e9d4e/play-services-measurement-sdk-api-19.0.0/jars/classes.jar!/" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/46fbf8da025caa52b77eca1d883e9d4e/play-services-measurement-sdk-api-19.0.0/res" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/46fbf8da025caa52b77eca1d883e9d4e/play-services-measurement-sdk-api-19.0.0/AndroidManifest.xml" />
++      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/46fbf8da025caa52b77eca1d883e9d4e/jetified-play-services-measurement-sdk-api-19.0.0/jars/classes.jar!/" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/46fbf8da025caa52b77eca1d883e9d4e/jetified-play-services-measurement-sdk-api-19.0.0/res" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/46fbf8da025caa52b77eca1d883e9d4e/jetified-play-services-measurement-sdk-api-19.0.0/AndroidManifest.xml" />
+     </CLASSES>
+     <JAVADOC>
+       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-measurement-sdk-api/19.0.0/c0d58b8efa926b2c607984c54fb3d274490badd1/play-services-measurement-sdk-api-19.0.0-javadoc.jar!/" />
+Index: .idea/libraries/Gradle__com_google_firebase_firebase_installations_17_0_0_aar.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"libraryTable\">\n  <library name=\"Gradle: com.google.firebase:firebase-installations:17.0.0@aar\">\n    <CLASSES>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a30eae67e308f2990f34fd0ceabcf627/firebase-installations-17.0.0/jars/classes.jar!/\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a30eae67e308f2990f34fd0ceabcf627/firebase-installations-17.0.0/res\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a30eae67e308f2990f34fd0ceabcf627/firebase-installations-17.0.0/AndroidManifest.xml\" />\n    </CLASSES>\n    <JAVADOC>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-installations/17.0.0/e06d4f72c8a51d321459518b52064a4855c7ac5a/firebase-installations-17.0.0-javadoc.jar!/\" />\n    </JAVADOC>\n    <SOURCES />\n  </library>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/libraries/Gradle__com_google_firebase_firebase_installations_17_0_0_aar.xml	(revision f4e12dff6c0d94fa575c06c5ec57032121658ee5)
++++ .idea/libraries/Gradle__com_google_firebase_firebase_installations_17_0_0_aar.xml	(date 1625726088427)
+@@ -4,6 +4,9 @@
+       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a30eae67e308f2990f34fd0ceabcf627/firebase-installations-17.0.0/jars/classes.jar!/" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a30eae67e308f2990f34fd0ceabcf627/firebase-installations-17.0.0/res" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a30eae67e308f2990f34fd0ceabcf627/firebase-installations-17.0.0/AndroidManifest.xml" />
++      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a30eae67e308f2990f34fd0ceabcf627/jetified-firebase-installations-17.0.0/jars/classes.jar!/" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a30eae67e308f2990f34fd0ceabcf627/jetified-firebase-installations-17.0.0/res" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a30eae67e308f2990f34fd0ceabcf627/jetified-firebase-installations-17.0.0/AndroidManifest.xml" />
+     </CLASSES>
+     <JAVADOC>
+       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-installations/17.0.0/e06d4f72c8a51d321459518b52064a4855c7ac5a/firebase-installations-17.0.0-javadoc.jar!/" />
+Index: .idea/libraries/Gradle__com_google_firebase_firebase_auth_21_0_1_aar.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"libraryTable\">\n  <library name=\"Gradle: com.google.firebase:firebase-auth:21.0.1@aar\">\n    <CLASSES>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/aa5c9d71e49d94ddd96894f0d2fe3b32/firebase-auth-21.0.1/jars/classes.jar!/\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/aa5c9d71e49d94ddd96894f0d2fe3b32/firebase-auth-21.0.1/res\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/aa5c9d71e49d94ddd96894f0d2fe3b32/firebase-auth-21.0.1/AndroidManifest.xml\" />\n    </CLASSES>\n    <JAVADOC>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-auth/21.0.1/93cfb8e92221edeece91b286008325e05ab1f53f/firebase-auth-21.0.1-javadoc.jar!/\" />\n    </JAVADOC>\n    <SOURCES />\n  </library>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/libraries/Gradle__com_google_firebase_firebase_auth_21_0_1_aar.xml	(revision f4e12dff6c0d94fa575c06c5ec57032121658ee5)
++++ .idea/libraries/Gradle__com_google_firebase_firebase_auth_21_0_1_aar.xml	(date 1625726088433)
+@@ -4,6 +4,9 @@
+       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/aa5c9d71e49d94ddd96894f0d2fe3b32/firebase-auth-21.0.1/jars/classes.jar!/" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/aa5c9d71e49d94ddd96894f0d2fe3b32/firebase-auth-21.0.1/res" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/aa5c9d71e49d94ddd96894f0d2fe3b32/firebase-auth-21.0.1/AndroidManifest.xml" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/aa5c9d71e49d94ddd96894f0d2fe3b32/jetified-firebase-auth-21.0.1/res" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/aa5c9d71e49d94ddd96894f0d2fe3b32/jetified-firebase-auth-21.0.1/AndroidManifest.xml" />
++      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/aa5c9d71e49d94ddd96894f0d2fe3b32/jetified-firebase-auth-21.0.1/jars/classes.jar!/" />
+     </CLASSES>
+     <JAVADOC>
+       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-auth/21.0.1/93cfb8e92221edeece91b286008325e05ab1f53f/firebase-auth-21.0.1-javadoc.jar!/" />
+Index: .idea/libraries/Gradle__com_google_android_gms_play_services_base_17_1_0_aar.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"libraryTable\">\n  <library name=\"Gradle: com.google.android.gms:play-services-base:17.1.0@aar\">\n    <CLASSES>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/538218237693c51a7f3aab01e8fb86e8/play-services-base-17.1.0/jars/classes.jar!/\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/538218237693c51a7f3aab01e8fb86e8/play-services-base-17.1.0/res\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/538218237693c51a7f3aab01e8fb86e8/play-services-base-17.1.0/AndroidManifest.xml\" />\n    </CLASSES>\n    <JAVADOC>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-base/17.1.0/d906658f01adc56396bea0573cf0ee171933e54/play-services-base-17.1.0-javadoc.jar!/\" />\n    </JAVADOC>\n    <SOURCES />\n  </library>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/libraries/Gradle__com_google_android_gms_play_services_base_17_1_0_aar.xml	(revision f4e12dff6c0d94fa575c06c5ec57032121658ee5)
++++ .idea/libraries/Gradle__com_google_android_gms_play_services_base_17_1_0_aar.xml	(date 1625726088441)
+@@ -4,6 +4,9 @@
+       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/538218237693c51a7f3aab01e8fb86e8/play-services-base-17.1.0/jars/classes.jar!/" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/538218237693c51a7f3aab01e8fb86e8/play-services-base-17.1.0/res" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/538218237693c51a7f3aab01e8fb86e8/play-services-base-17.1.0/AndroidManifest.xml" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/538218237693c51a7f3aab01e8fb86e8/jetified-play-services-base-17.1.0/AndroidManifest.xml" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/538218237693c51a7f3aab01e8fb86e8/jetified-play-services-base-17.1.0/res" />
++      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/538218237693c51a7f3aab01e8fb86e8/jetified-play-services-base-17.1.0/jars/classes.jar!/" />
+     </CLASSES>
+     <JAVADOC>
+       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-base/17.1.0/d906658f01adc56396bea0573cf0ee171933e54/play-services-base-17.1.0-javadoc.jar!/" />
+Index: .idea/libraries/Gradle__com_google_android_gms_play_services_measurement_sdk_19_0_0_aar.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"libraryTable\">\n  <library name=\"Gradle: com.google.android.gms:play-services-measurement-sdk:19.0.0@aar\">\n    <CLASSES>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/cde03bfce13d951d22edc8daa86f6b48/play-services-measurement-sdk-19.0.0/jars/classes.jar!/\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/cde03bfce13d951d22edc8daa86f6b48/play-services-measurement-sdk-19.0.0/res\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/cde03bfce13d951d22edc8daa86f6b48/play-services-measurement-sdk-19.0.0/AndroidManifest.xml\" />\n    </CLASSES>\n    <JAVADOC>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-measurement-sdk/19.0.0/c0d58b8efa926b2c607984c54fb3d274490badd1/play-services-measurement-sdk-19.0.0-javadoc.jar!/\" />\n    </JAVADOC>\n    <SOURCES />\n  </library>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/libraries/Gradle__com_google_android_gms_play_services_measurement_sdk_19_0_0_aar.xml	(revision f4e12dff6c0d94fa575c06c5ec57032121658ee5)
++++ .idea/libraries/Gradle__com_google_android_gms_play_services_measurement_sdk_19_0_0_aar.xml	(date 1625726088425)
+@@ -4,6 +4,9 @@
+       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/cde03bfce13d951d22edc8daa86f6b48/play-services-measurement-sdk-19.0.0/jars/classes.jar!/" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/cde03bfce13d951d22edc8daa86f6b48/play-services-measurement-sdk-19.0.0/res" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/cde03bfce13d951d22edc8daa86f6b48/play-services-measurement-sdk-19.0.0/AndroidManifest.xml" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/cde03bfce13d951d22edc8daa86f6b48/jetified-play-services-measurement-sdk-19.0.0/res" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/cde03bfce13d951d22edc8daa86f6b48/jetified-play-services-measurement-sdk-19.0.0/AndroidManifest.xml" />
++      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/cde03bfce13d951d22edc8daa86f6b48/jetified-play-services-measurement-sdk-19.0.0/jars/classes.jar!/" />
+     </CLASSES>
+     <JAVADOC>
+       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-measurement-sdk/19.0.0/c0d58b8efa926b2c607984c54fb3d274490badd1/play-services-measurement-sdk-19.0.0-javadoc.jar!/" />
+Index: .idea/libraries/Gradle__com_google_firebase_firebase_appcheck_interop_16_0_0_beta01_aar.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"libraryTable\">\n  <library name=\"Gradle: com.google.firebase:firebase-appcheck-interop:16.0.0-beta01@aar\">\n    <CLASSES>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0804391a8feec84b67a5da249b1a488e/firebase-appcheck-interop-16.0.0-beta01/jars/classes.jar!/\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0804391a8feec84b67a5da249b1a488e/firebase-appcheck-interop-16.0.0-beta01/res\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0804391a8feec84b67a5da249b1a488e/firebase-appcheck-interop-16.0.0-beta01/AndroidManifest.xml\" />\n    </CLASSES>\n    <JAVADOC>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-appcheck-interop/16.0.0-beta01/fc6f639d2de21d65a5cdfc2fb2f1f16a04699789/firebase-appcheck-interop-16.0.0-beta01-javadoc.jar!/\" />\n    </JAVADOC>\n    <SOURCES>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-appcheck-interop/16.0.0-beta01/67f2cdb7c59735c6e0c9f08c2884b7d74df39986/firebase-appcheck-interop-16.0.0-beta01-sources.jar!/\" />\n    </SOURCES>\n  </library>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/libraries/Gradle__com_google_firebase_firebase_appcheck_interop_16_0_0_beta01_aar.xml	(revision f4e12dff6c0d94fa575c06c5ec57032121658ee5)
++++ .idea/libraries/Gradle__com_google_firebase_firebase_appcheck_interop_16_0_0_beta01_aar.xml	(date 1625726088422)
+@@ -4,6 +4,9 @@
+       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0804391a8feec84b67a5da249b1a488e/firebase-appcheck-interop-16.0.0-beta01/jars/classes.jar!/" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0804391a8feec84b67a5da249b1a488e/firebase-appcheck-interop-16.0.0-beta01/res" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0804391a8feec84b67a5da249b1a488e/firebase-appcheck-interop-16.0.0-beta01/AndroidManifest.xml" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0804391a8feec84b67a5da249b1a488e/jetified-firebase-appcheck-interop-16.0.0-beta01/AndroidManifest.xml" />
++      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0804391a8feec84b67a5da249b1a488e/jetified-firebase-appcheck-interop-16.0.0-beta01/jars/classes.jar!/" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0804391a8feec84b67a5da249b1a488e/jetified-firebase-appcheck-interop-16.0.0-beta01/res" />
+     </CLASSES>
+     <JAVADOC>
+       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-appcheck-interop/16.0.0-beta01/fc6f639d2de21d65a5cdfc2fb2f1f16a04699789/firebase-appcheck-interop-16.0.0-beta01-javadoc.jar!/" />
+Index: .idea/libraries/Gradle__com_google_android_gms_play_services_stats_17_0_0_aar.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"libraryTable\">\n  <library name=\"Gradle: com.google.android.gms:play-services-stats:17.0.0@aar\">\n    <CLASSES>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d941444ac7a095472cb9693abaaedccd/play-services-stats-17.0.0/jars/classes.jar!/\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d941444ac7a095472cb9693abaaedccd/play-services-stats-17.0.0/res\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d941444ac7a095472cb9693abaaedccd/play-services-stats-17.0.0/AndroidManifest.xml\" />\n    </CLASSES>\n    <JAVADOC />\n    <SOURCES />\n  </library>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/libraries/Gradle__com_google_android_gms_play_services_stats_17_0_0_aar.xml	(revision f4e12dff6c0d94fa575c06c5ec57032121658ee5)
++++ .idea/libraries/Gradle__com_google_android_gms_play_services_stats_17_0_0_aar.xml	(date 1625726088443)
+@@ -4,6 +4,9 @@
+       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d941444ac7a095472cb9693abaaedccd/play-services-stats-17.0.0/jars/classes.jar!/" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d941444ac7a095472cb9693abaaedccd/play-services-stats-17.0.0/res" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d941444ac7a095472cb9693abaaedccd/play-services-stats-17.0.0/AndroidManifest.xml" />
++      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d941444ac7a095472cb9693abaaedccd/jetified-play-services-stats-17.0.0/jars/classes.jar!/" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d941444ac7a095472cb9693abaaedccd/jetified-play-services-stats-17.0.0/res" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d941444ac7a095472cb9693abaaedccd/jetified-play-services-stats-17.0.0/AndroidManifest.xml" />
+     </CLASSES>
+     <JAVADOC />
+     <SOURCES />
+Index: .idea/libraries/Gradle__com_google_firebase_protolite_well_known_types_18_0_0_aar.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"libraryTable\">\n  <library name=\"Gradle: com.google.firebase:protolite-well-known-types:18.0.0@aar\">\n    <CLASSES>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/74a57255a2815f7692e61cdae3dcb85c/protolite-well-known-types-18.0.0/jars/classes.jar!/\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/74a57255a2815f7692e61cdae3dcb85c/protolite-well-known-types-18.0.0/res\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/74a57255a2815f7692e61cdae3dcb85c/protolite-well-known-types-18.0.0/AndroidManifest.xml\" />\n    </CLASSES>\n    <JAVADOC>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/protolite-well-known-types/18.0.0/8e15c66257eefa93807e8dc218bf82da40c5390c/protolite-well-known-types-18.0.0-javadoc.jar!/\" />\n    </JAVADOC>\n    <SOURCES />\n  </library>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/libraries/Gradle__com_google_firebase_protolite_well_known_types_18_0_0_aar.xml	(revision f4e12dff6c0d94fa575c06c5ec57032121658ee5)
++++ .idea/libraries/Gradle__com_google_firebase_protolite_well_known_types_18_0_0_aar.xml	(date 1625726088449)
+@@ -4,6 +4,9 @@
+       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/74a57255a2815f7692e61cdae3dcb85c/protolite-well-known-types-18.0.0/jars/classes.jar!/" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/74a57255a2815f7692e61cdae3dcb85c/protolite-well-known-types-18.0.0/res" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/74a57255a2815f7692e61cdae3dcb85c/protolite-well-known-types-18.0.0/AndroidManifest.xml" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/74a57255a2815f7692e61cdae3dcb85c/jetified-protolite-well-known-types-18.0.0/res" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/74a57255a2815f7692e61cdae3dcb85c/jetified-protolite-well-known-types-18.0.0/AndroidManifest.xml" />
++      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/74a57255a2815f7692e61cdae3dcb85c/jetified-protolite-well-known-types-18.0.0/jars/classes.jar!/" />
+     </CLASSES>
+     <JAVADOC>
+       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/protolite-well-known-types/18.0.0/8e15c66257eefa93807e8dc218bf82da40c5390c/protolite-well-known-types-18.0.0-javadoc.jar!/" />
+Index: .idea/libraries/Gradle__com_google_firebase_firebase_auth_interop_20_0_0_aar.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"libraryTable\">\n  <library name=\"Gradle: com.google.firebase:firebase-auth-interop:20.0.0@aar\">\n    <CLASSES>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b037ec23770d46f1f24d2392689b3a67/firebase-auth-interop-20.0.0/jars/classes.jar!/\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b037ec23770d46f1f24d2392689b3a67/firebase-auth-interop-20.0.0/res\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b037ec23770d46f1f24d2392689b3a67/firebase-auth-interop-20.0.0/AndroidManifest.xml\" />\n    </CLASSES>\n    <JAVADOC>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-auth-interop/20.0.0/8014b3cbc53e9c14226052dd919055a99d0d46d8/firebase-auth-interop-20.0.0-javadoc.jar!/\" />\n    </JAVADOC>\n    <SOURCES />\n  </library>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/libraries/Gradle__com_google_firebase_firebase_auth_interop_20_0_0_aar.xml	(revision f4e12dff6c0d94fa575c06c5ec57032121658ee5)
++++ .idea/libraries/Gradle__com_google_firebase_firebase_auth_interop_20_0_0_aar.xml	(date 1625726088438)
+@@ -4,6 +4,9 @@
+       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b037ec23770d46f1f24d2392689b3a67/firebase-auth-interop-20.0.0/jars/classes.jar!/" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b037ec23770d46f1f24d2392689b3a67/firebase-auth-interop-20.0.0/res" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b037ec23770d46f1f24d2392689b3a67/firebase-auth-interop-20.0.0/AndroidManifest.xml" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b037ec23770d46f1f24d2392689b3a67/jetified-firebase-auth-interop-20.0.0/res" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b037ec23770d46f1f24d2392689b3a67/jetified-firebase-auth-interop-20.0.0/AndroidManifest.xml" />
++      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b037ec23770d46f1f24d2392689b3a67/jetified-firebase-auth-interop-20.0.0/jars/classes.jar!/" />
+     </CLASSES>
+     <JAVADOC>
+       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-auth-interop/20.0.0/8014b3cbc53e9c14226052dd919055a99d0d46d8/firebase-auth-interop-20.0.0-javadoc.jar!/" />
+Index: .idea/libraries/Gradle__com_google_firebase_firebase_database_collection_18_0_0_aar.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"libraryTable\">\n  <library name=\"Gradle: com.google.firebase:firebase-database-collection:18.0.0@aar\">\n    <CLASSES>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a8e020c564aed18e8ed957df2c5757e1/firebase-database-collection-18.0.0/jars/classes.jar!/\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a8e020c564aed18e8ed957df2c5757e1/firebase-database-collection-18.0.0/res\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a8e020c564aed18e8ed957df2c5757e1/firebase-database-collection-18.0.0/AndroidManifest.xml\" />\n    </CLASSES>\n    <JAVADOC>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-database-collection/18.0.0/356b17279173563a32e5043c9ead29ca888f8813/firebase-database-collection-18.0.0-javadoc.jar!/\" />\n    </JAVADOC>\n    <SOURCES>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-database-collection/18.0.0/6996e9054c5e2be34fe5b7094aa44d72a0b14aa0/firebase-database-collection-18.0.0-sources.jar!/\" />\n    </SOURCES>\n  </library>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/libraries/Gradle__com_google_firebase_firebase_database_collection_18_0_0_aar.xml	(revision f4e12dff6c0d94fa575c06c5ec57032121658ee5)
++++ .idea/libraries/Gradle__com_google_firebase_firebase_database_collection_18_0_0_aar.xml	(date 1625726088483)
+@@ -4,6 +4,9 @@
+       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a8e020c564aed18e8ed957df2c5757e1/firebase-database-collection-18.0.0/jars/classes.jar!/" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a8e020c564aed18e8ed957df2c5757e1/firebase-database-collection-18.0.0/res" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a8e020c564aed18e8ed957df2c5757e1/firebase-database-collection-18.0.0/AndroidManifest.xml" />
++      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a8e020c564aed18e8ed957df2c5757e1/jetified-firebase-database-collection-18.0.0/jars/classes.jar!/" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a8e020c564aed18e8ed957df2c5757e1/jetified-firebase-database-collection-18.0.0/res" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a8e020c564aed18e8ed957df2c5757e1/jetified-firebase-database-collection-18.0.0/AndroidManifest.xml" />
+     </CLASSES>
+     <JAVADOC>
+       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-database-collection/18.0.0/356b17279173563a32e5043c9ead29ca888f8813/firebase-database-collection-18.0.0-javadoc.jar!/" />
+Index: .idea/libraries/Gradle__com_google_firebase_firebase_analytics_19_0_0_aar.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"libraryTable\">\n  <library name=\"Gradle: com.google.firebase:firebase-analytics:19.0.0@aar\">\n    <CLASSES>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/51c8ec8da777f5b5de0b94999209ffaf/firebase-analytics-19.0.0/jars/classes.jar!/\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/51c8ec8da777f5b5de0b94999209ffaf/firebase-analytics-19.0.0/res\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/51c8ec8da777f5b5de0b94999209ffaf/firebase-analytics-19.0.0/AndroidManifest.xml\" />\n    </CLASSES>\n    <JAVADOC>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-analytics/19.0.0/c0d58b8efa926b2c607984c54fb3d274490badd1/firebase-analytics-19.0.0-javadoc.jar!/\" />\n    </JAVADOC>\n    <SOURCES />\n  </library>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/libraries/Gradle__com_google_firebase_firebase_analytics_19_0_0_aar.xml	(revision f4e12dff6c0d94fa575c06c5ec57032121658ee5)
++++ .idea/libraries/Gradle__com_google_firebase_firebase_analytics_19_0_0_aar.xml	(date 1625726088480)
+@@ -4,6 +4,9 @@
+       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/51c8ec8da777f5b5de0b94999209ffaf/firebase-analytics-19.0.0/jars/classes.jar!/" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/51c8ec8da777f5b5de0b94999209ffaf/firebase-analytics-19.0.0/res" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/51c8ec8da777f5b5de0b94999209ffaf/firebase-analytics-19.0.0/AndroidManifest.xml" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/51c8ec8da777f5b5de0b94999209ffaf/jetified-firebase-analytics-19.0.0/AndroidManifest.xml" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/51c8ec8da777f5b5de0b94999209ffaf/jetified-firebase-analytics-19.0.0/res" />
++      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/51c8ec8da777f5b5de0b94999209ffaf/jetified-firebase-analytics-19.0.0/jars/classes.jar!/" />
+     </CLASSES>
+     <JAVADOC>
+       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-analytics/19.0.0/c0d58b8efa926b2c607984c54fb3d274490badd1/firebase-analytics-19.0.0-javadoc.jar!/" />
+Index: .idea/libraries/Gradle__com_google_android_gms_play_services_measurement_api_19_0_0_aar.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"libraryTable\">\n  <library name=\"Gradle: com.google.android.gms:play-services-measurement-api:19.0.0@aar\">\n    <CLASSES>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/de2c13ed196484300b446ed312f50cec/play-services-measurement-api-19.0.0/jars/classes.jar!/\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/de2c13ed196484300b446ed312f50cec/play-services-measurement-api-19.0.0/res\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/de2c13ed196484300b446ed312f50cec/play-services-measurement-api-19.0.0/AndroidManifest.xml\" />\n    </CLASSES>\n    <JAVADOC>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-measurement-api/19.0.0/96ca3a78e54874a350bd808e9f407fc7a7ea93/play-services-measurement-api-19.0.0-javadoc.jar!/\" />\n    </JAVADOC>\n    <SOURCES />\n  </library>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/libraries/Gradle__com_google_android_gms_play_services_measurement_api_19_0_0_aar.xml	(revision f4e12dff6c0d94fa575c06c5ec57032121658ee5)
++++ .idea/libraries/Gradle__com_google_android_gms_play_services_measurement_api_19_0_0_aar.xml	(date 1625726088420)
+@@ -4,6 +4,9 @@
+       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/de2c13ed196484300b446ed312f50cec/play-services-measurement-api-19.0.0/jars/classes.jar!/" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/de2c13ed196484300b446ed312f50cec/play-services-measurement-api-19.0.0/res" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/de2c13ed196484300b446ed312f50cec/play-services-measurement-api-19.0.0/AndroidManifest.xml" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/de2c13ed196484300b446ed312f50cec/jetified-play-services-measurement-api-19.0.0/AndroidManifest.xml" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/de2c13ed196484300b446ed312f50cec/jetified-play-services-measurement-api-19.0.0/res" />
++      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/de2c13ed196484300b446ed312f50cec/jetified-play-services-measurement-api-19.0.0/jars/classes.jar!/" />
+     </CLASSES>
+     <JAVADOC>
+       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-measurement-api/19.0.0/96ca3a78e54874a350bd808e9f407fc7a7ea93/play-services-measurement-api-19.0.0-javadoc.jar!/" />
+Index: .idea/libraries/Gradle__com_google_firebase_firebase_common_20_0_0_aar.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"libraryTable\">\n  <library name=\"Gradle: com.google.firebase:firebase-common:20.0.0@aar\">\n    <CLASSES>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ba99f0db75ff1152780be89a71df52d7/firebase-common-20.0.0/jars/classes.jar!/\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ba99f0db75ff1152780be89a71df52d7/firebase-common-20.0.0/res\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ba99f0db75ff1152780be89a71df52d7/firebase-common-20.0.0/AndroidManifest.xml\" />\n    </CLASSES>\n    <JAVADOC>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-common/20.0.0/35a489d6cdcfa34dd756120fe574500e30a62d8a/firebase-common-20.0.0-javadoc.jar!/\" />\n    </JAVADOC>\n    <SOURCES>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-common/20.0.0/a2cc0a72ed0bc6d121c9bb18517266f1abb36845/firebase-common-20.0.0-sources.jar!/\" />\n    </SOURCES>\n  </library>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/libraries/Gradle__com_google_firebase_firebase_common_20_0_0_aar.xml	(revision f4e12dff6c0d94fa575c06c5ec57032121658ee5)
++++ .idea/libraries/Gradle__com_google_firebase_firebase_common_20_0_0_aar.xml	(date 1625726088464)
+@@ -4,6 +4,9 @@
+       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ba99f0db75ff1152780be89a71df52d7/firebase-common-20.0.0/jars/classes.jar!/" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ba99f0db75ff1152780be89a71df52d7/firebase-common-20.0.0/res" />
+       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ba99f0db75ff1152780be89a71df52d7/firebase-common-20.0.0/AndroidManifest.xml" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ba99f0db75ff1152780be89a71df52d7/jetified-firebase-common-20.0.0/res" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ba99f0db75ff1152780be89a71df52d7/jetified-firebase-common-20.0.0/AndroidManifest.xml" />
++      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ba99f0db75ff1152780be89a71df52d7/jetified-firebase-common-20.0.0/jars/classes.jar!/" />
+     </CLASSES>
+     <JAVADOC>
+       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-common/20.0.0/35a489d6cdcfa34dd756120fe574500e30a62d8a/firebase-common-20.0.0-javadoc.jar!/" />

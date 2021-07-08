@@ -1,0 +1,106 @@
+Index: app/src/main/java/idv/tfp10101/iamin/network/RemoteAccess.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package idv.tfp10101.iamin.network;\n\nimport android.content.Context;\nimport android.graphics.Bitmap;\nimport android.net.ConnectivityManager;\nimport android.net.Network;\nimport android.net.NetworkCapabilities;\nimport android.net.NetworkInfo;\nimport android.os.Build;\nimport android.util.Log;\n\nimport java.util.concurrent.ExecutionException;\nimport java.util.concurrent.ExecutorService;\nimport java.util.concurrent.Future;\nimport java.util.concurrent.FutureTask;\n\nimport idv.tfp10101.iamin.Constants;\n\n\n/**\n * Server連線 Action總表\n */\npublic class RemoteAccess {\n    // 根網址\n    public static String URL_SERVER = \"http://10.0.2.2:8080/iamin_JavaServlet/\";\n    //實機測試\n//    public static String URL_SERVER = \"http://192.168.1.102:8080/iamin_JavaServlet/\";\n    //  test\n    /**\n     * (Json)抓取server資料\n     * @param url\n     * @param requst\n     * @return\n     */\n\n    // getRometeData 字打錯了 getRemoteData才對\n    public static String getRometeData(String url, String requst) {\n        JsonCallable jsonCallable = new JsonCallable(url, requst);\n        // callable 轉 Runnable (FutureTask<> -> Runnable的子代)\n        FutureTask<String> task = new FutureTask<>(jsonCallable);\n        Thread thread = new Thread(task);\n        thread.start();\n        try {\n            return task.get();\n        } catch (Exception e) {\n            Log.e(Constants.TAG, \"getRemoteData(): \" + e.toString());\n            task.cancel(true);\n            return null;\n        }\n    }\n\n    /**\n     * (Images)抓取server資料\n     * @param url\n//     * @param requst\n     * @return\n     */\n//    public static List<byte[]> getRemoteImages(String url, String requst) {\n//\n//    }\n\n    // 適用取得一張圖\n    public static Bitmap getRemoteImage(String url, String outStr) {\n        ImageCallable callable = new ImageCallable(url, outStr);\n        FutureTask<Bitmap> task = new FutureTask<>(callable);\n        Thread thread = new Thread(task);\n        thread.start();\n        try {\n            return task.get();\n        } catch (Exception e) {\n            task.cancel(true);\n            return null;\n        }\n    }\n    // 搭配Executor取圖 thread pool\n    public static Bitmap getRemoteImage(String url, String outStr, ExecutorService executor) {\n\n        ImageCallable callable = new ImageCallable(url, outStr);\n        //每一個提交都會產生一個future\n        Future<Bitmap> future = executor.submit(callable);\n        Bitmap bitmap = null;\n        try {\n            bitmap = future.get();\n        } catch (ExecutionException | InterruptedException e) {\n            future.cancel(true);\n        }\n        return bitmap;\n    }\n\n    /**\n     * 檢查是否有網路連線\n     * API 23 以上：\n     * ConnectivityManager -> Network -> NetworkCapabilities\n     *\n     * API 23 下：\n     * ConnectivityManager -> NetworkInfo\n     * @param context\n     * @return\n     */\n    public static boolean networkConnected(Context context) {\n        // Connectivity(連接性)\n        ConnectivityManager CM = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);\n        if (CM != null) {\n            // VERSION > API 23\n            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {\n                Network network = CM.getActiveNetwork(); /** 需要權限 */\n                // NetworkCapabilities(網絡能力)\n                NetworkCapabilities networkCapabilities = CM.getNetworkCapabilities(network);\n                // (Wifi 行動網路 有線網路)\n                if (networkCapabilities != null) {\n                    boolean wifi = networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI);\n                    boolean cellular = networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI);\n                    boolean ethernet = networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET);\n                    Log.d(Constants.TAG, \"TRANSPORT_WIFI: \" + String.valueOf(wifi));\n                    Log.d(Constants.TAG, \"TRANSPORT_CELLULAR: \" + String.valueOf(cellular));\n                    Log.d(Constants.TAG, \"TRANSPORT_ETHERNET: \" + String.valueOf(ethernet));\n                    return wifi || cellular || ethernet;\n                }\n            }else {\n                NetworkInfo networkInfo = CM.getActiveNetworkInfo();\n                return networkInfo != null && networkInfo.isConnected();\n            }\n        }\n        Log.e(Constants.TAG, \"ConnectivityManager Is Null\");\n        return false;\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/idv/tfp10101/iamin/network/RemoteAccess.java	(revision f4e12dff6c0d94fa575c06c5ec57032121658ee5)
++++ app/src/main/java/idv/tfp10101/iamin/network/RemoteAccess.java	(date 1625727066171)
+@@ -22,9 +22,9 @@
+  */
+ public class RemoteAccess {
+     // 根網址
+-    public static String URL_SERVER = "http://10.0.2.2:8080/iamin_JavaServlet/";
++//    public static String URL_SERVER = "http://10.0.2.2:8080/iamin_JavaServlet/";
+     //實機測試
+-//    public static String URL_SERVER = "http://192.168.1.102:8080/iamin_JavaServlet/";
++    public static String URL_SERVER = "http://192.168.0.11:8080/iamin_JavaServlet/";
+     //  test
+     /**
+      * (Json)抓取server資料
+Index: .idea/libraries/Gradle__com_github_PhilJay_MPAndroidChart_v3_1_0_aar.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/libraries/Gradle__com_github_PhilJay_MPAndroidChart_v3_1_0_aar.xml	(date 1625727066232)
++++ .idea/libraries/Gradle__com_github_PhilJay_MPAndroidChart_v3_1_0_aar.xml	(date 1625727066232)
+@@ -0,0 +1,15 @@
++<component name="libraryTable">
++  <library name="Gradle: com.github.PhilJay:MPAndroidChart:v3.1.0@aar">
++    <CLASSES>
++      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/db2ffb912dbb3a648b1a938712bb3306/MPAndroidChart-v3.1.0/jars/classes.jar!/" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/db2ffb912dbb3a648b1a938712bb3306/MPAndroidChart-v3.1.0/res" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/db2ffb912dbb3a648b1a938712bb3306/MPAndroidChart-v3.1.0/AndroidManifest.xml" />
++    </CLASSES>
++    <JAVADOC>
++      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.PhilJay/MPAndroidChart/v3.1.0/f85826533f5497662f40b2269dc9af1cc0692cd0/MPAndroidChart-v3.1.0-javadoc.jar!/" />
++    </JAVADOC>
++    <SOURCES>
++      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.PhilJay/MPAndroidChart/v3.1.0/d397442db532e8e2471cd0e063e64894c70794aa/MPAndroidChart-v3.1.0-sources.jar!/" />
++    </SOURCES>
++  </library>
++</component>
+\ No newline at end of file
+Index: .idea/libraries/Gradle__androidx_browser_browser_1_0_0_aar.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"libraryTable\">\n  <library name=\"Gradle: androidx.browser:browser:1.0.0@aar\">\n    <ANNOTATIONS>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/985b356e7eb66d1840b74402e932883f/browser-1.0.0/annotations.zip!/\" />\n    </ANNOTATIONS>\n    <CLASSES>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/985b356e7eb66d1840b74402e932883f/browser-1.0.0/jars/classes.jar!/\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/985b356e7eb66d1840b74402e932883f/browser-1.0.0/res\" />\n      <root url=\"file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/985b356e7eb66d1840b74402e932883f/browser-1.0.0/AndroidManifest.xml\" />\n    </CLASSES>\n    <JAVADOC />\n    <SOURCES>\n      <root url=\"jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.browser/browser/1.0.0/804dc4c93b5f45da8f72c10a5080dbb21715d813/browser-1.0.0-sources.jar!/\" />\n    </SOURCES>\n  </library>\n</component>
+===================================================================
+--- .idea/libraries/Gradle__androidx_browser_browser_1_0_0_aar.xml	(revision f4e12dff6c0d94fa575c06c5ec57032121658ee5)
++++ .idea/libraries/Gradle__androidx_browser_browser_1_3_0_aar.xml	(date 1625727066213)
+@@ -1,16 +1,16 @@
+ <component name="libraryTable">
+-  <library name="Gradle: androidx.browser:browser:1.0.0@aar">
++  <library name="Gradle: androidx.browser:browser:1.3.0@aar">
+     <ANNOTATIONS>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/985b356e7eb66d1840b74402e932883f/browser-1.0.0/annotations.zip!/" />
++      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9fbf346799b6c7682a9f23353a0346c0/browser-1.3.0/annotations.zip!/" />
+     </ANNOTATIONS>
+     <CLASSES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/985b356e7eb66d1840b74402e932883f/browser-1.0.0/jars/classes.jar!/" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/985b356e7eb66d1840b74402e932883f/browser-1.0.0/res" />
+-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/985b356e7eb66d1840b74402e932883f/browser-1.0.0/AndroidManifest.xml" />
++      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9fbf346799b6c7682a9f23353a0346c0/browser-1.3.0/jars/classes.jar!/" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9fbf346799b6c7682a9f23353a0346c0/browser-1.3.0/res" />
++      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9fbf346799b6c7682a9f23353a0346c0/browser-1.3.0/AndroidManifest.xml" />
+     </CLASSES>
+     <JAVADOC />
+     <SOURCES>
+-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.browser/browser/1.0.0/804dc4c93b5f45da8f72c10a5080dbb21715d813/browser-1.0.0-sources.jar!/" />
++      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.browser/browser/1.3.0/7ad6013ea18d28a089b76a439ee22941f45e6b95/browser-1.3.0-sources.jar!/" />
+     </SOURCES>
+   </library>
+ </component>
+\ No newline at end of file
+Index: app/proguard-rules.pro
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/proguard-rules.pro	(date 1625727066177)
++++ app/proguard-rules.pro	(date 1625727066177)
+@@ -0,0 +1,21 @@
++# Add project specific ProGuard rules here.
++# You can control the set of applied configuration files using the
++# proguardFiles setting in build.gradle.
++#
++# For more details, see
++#   http://developer.android.com/guide/developing/tools/proguard.html
++
++# If your project uses WebView with JS, uncomment the following
++# and specify the fully qualified class name to the JavaScript interface
++# class:
++#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
++#   public *;
++#}
++
++# Uncomment this to preserve the line number information for
++# debugging stack traces.
++#-keepattributes SourceFile,LineNumberTable
++
++# If you keep the line number information, uncomment this to
++# hide the original source file name.
++#-renamesourcefileattribute SourceFile
+\ No newline at end of file

@@ -19,25 +19,25 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import idv.tfp10101.iamin.R;
 import idv.tfp10101.iamin.member.Member;
 
 import static idv.tfp10101.iamin.member.MemberControl.memberRemoteAccess;
-import static idv.tfp10101.iamin.member.MemberControl.storeMemberIdSharedPreference;
 
 public class SignUpFragment extends Fragment {
-    private final static String TAG = "TAG_signup";
+    private final static String TAG = "TAG_RegisterFragment";
     private Activity activity;
     private FirebaseAuth auth;
     private EditText etEmail,etPassword,etNickname,etPhoneNumber;
     private Member member;
+    private FirebaseFirestore db;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = getActivity();
         auth = FirebaseAuth.getInstance();
-        member = Member.getInstance();
+        member = new Member();
+        db = FirebaseFirestore.getInstance();
     }
 
     @Override
@@ -48,14 +48,16 @@ public class SignUpFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull  View view, @Nullable  Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         etEmail = view.findViewById(R.id.etRegisterEmail);
         etPassword = view.findViewById(R.id.etRegisterPassword);
         etNickname = view.findViewById(R.id.etRegisterNickname);
         etPhoneNumber = view.findViewById(R.id.etRegisterPhoneNumber);
 
-        //前往註冊頁面
+
+
+        //to RegisterFragment
         view.findViewById(R.id.btSignUp).setOnClickListener(v ->{
 
             String email = etEmail.getText().toString().trim();
@@ -64,8 +66,7 @@ public class SignUpFragment extends Fragment {
             String phoneNumber = etPhoneNumber.getText().toString().trim();
 
             //確定email 跟 password格式
-            if (email.trim().isEmpty() || password.trim().isEmpty()) {
-                Toast.makeText(activity, "Email/Password can't not be empty", Toast.LENGTH_SHORT).show();
+            if (!validateForm(email,password)){
                 return;
             }
 
@@ -81,6 +82,9 @@ public class SignUpFragment extends Fragment {
             member.setPassword(password);
             //firebase創帳號
             createAccount(member);
+
+            //移動到首頁
+            Navigation.findNavController(requireView()).navigate(R.id.action_signUpFragment_to_homeFragment);
         });
     }
 
@@ -90,21 +94,52 @@ public class SignUpFragment extends Fragment {
     }
 
     private void createAccount(Member member) {
+        Log.d(TAG, "createAccount:" + member.getEmail());
         auth.createUserWithEmailAndPassword(member.getEmail(), member.getPassword())
-                .addOnCompleteListener(requireActivity(), task -> {
+                .addOnCompleteListener(activity, task -> {
                     if (task.isSuccessful()) {
-                        Log.d(TAG, "createAccount:" + member.getEmail());
-                        //mysql創帳號
-                        member.setuUId(auth.getCurrentUser().getUid());
-//                        Log.d(TAG,"Uid: " + auth.getCurrentUser().getUid());
-                        String mySqlMemberId = memberRemoteAccess(activity , member, "signup");
-                        storeMemberIdSharedPreference(activity,mySqlMemberId);
-                        member.setId(Integer.parseInt(mySqlMemberId));
-                        //移動到首頁
-                        Navigation.findNavController(requireView()).navigate(R.id.action_signUpFragment_to_memberCenterFragment);
+
+                        Log.d(TAG, "createUserWithEmail:success");
+                        //firebase創帳號
+                        createMemberDataInfirebase(member);
                     } else {
+                        Log.d(TAG, "createUserWithEmail:failure", task.getException());
                         Toast.makeText(getContext(), "Authentication failed.", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
+
+    private void createMemberDataInfirebase(Member member) {
+            db.collection("Members").document(auth.getCurrentUser().getUid()).set(member)
+                    .addOnCompleteListener(task -> {
+                        Toast.makeText(activity, auth.getCurrentUser().getUid(), Toast.LENGTH_SHORT).show();
+                        if (task.isSuccessful()) {
+                            String message = "Upload success with ID: " + auth.getCurrentUser().getUid();
+                            Log.d(TAG, auth.getCurrentUser().getUid() + "<--------- UUID");
+
+                            //mysql創帳號
+                            member.setuUId(auth.getCurrentUser().getUid());
+                            Log.d(TAG, member.getuUId());
+                            memberRemoteAccess(activity, member, "signup");
+
+                        } else {
+                            String message = task.getException() == null ?
+                                    "Upload failed" :
+                                    task.getException().getMessage();
+                            Log.d(TAG, "message: " + message);
+                        }
+                    });
+    }
+
+    private boolean validateForm(String email, String password) {
+        if (email.trim().isEmpty() || password.trim().isEmpty()) {
+            Toast.makeText(activity, "Email/Password can't not be empty", Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
+
 }
