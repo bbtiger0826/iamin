@@ -5,6 +5,8 @@ import java.sql.Timestamp;
 
 public class Member implements Serializable {
 
+    private static Member memberInstance = null;
+
     private int id;
     private int follow_count;
     private double rating;
@@ -17,9 +19,21 @@ public class Member implements Serializable {
     private Timestamp startTime;
     private Timestamp updateDate;
     private Timestamp loginTime;
+    private Timestamp deleteTime;
 
+    //檢查是否有修改資料
 
-    public Member() {
+    private boolean update;
+
+    private Member() {
+    }
+
+    public static Member getInstance(){
+
+        if(memberInstance == null){
+            memberInstance = new Member();
+        }
+        return memberInstance;
     }
 
     public Member(int id,int follow_count, double rating, String nickname) {
@@ -27,19 +41,6 @@ public class Member implements Serializable {
         this.follow_count = follow_count;
         this.rating = rating;
         this.nickname = nickname;
-    }
-
-    public Member(int id, int follow_count, double rating, String uUId, String email, String password, String nickname,
-                  String phoneNumber) {
-        super();
-        this.id = id;
-        this.follow_count = follow_count;
-        this.rating = rating;
-        this.uUId = uUId;
-        this.email = email;
-        this.password = password;
-        this.nickname = nickname;
-        this.phoneNumber = phoneNumber;
     }
 
 
@@ -99,21 +100,26 @@ public class Member implements Serializable {
         this.nickname = nickname;
     }
 
+
     public String getPhoneNumber() {
         return phoneNumber;
     }
+
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
+
     public byte[] getImage() {
         return image;
     }
 
+
     public void setImage(byte[] image) {
         this.image = image;
     }
+
 
     public Timestamp getStartTime() {
         return startTime;
@@ -137,5 +143,21 @@ public class Member implements Serializable {
 
     public void setLoginTime(Timestamp loginTime) {
         this.loginTime = loginTime;
+    }
+
+    public Timestamp getDeleteTime() {
+        return deleteTime;
+    }
+
+    public void setDeleteTime(Timestamp deleteTime) {
+        this.deleteTime = deleteTime;
+    }
+
+    public boolean isUpdate() {
+        return update;
+    }
+
+    public void setUpdate(boolean update) {
+        this.update = update;
     }
 }

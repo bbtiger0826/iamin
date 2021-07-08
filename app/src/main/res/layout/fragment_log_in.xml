@@ -32,9 +32,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="10dp"
-                    android:src="@drawable/project_icon_large"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="10dp" />
+                    android:src="@drawable/project_icon_large" />
 
                 <TextView
                     android:layout_width="160dp"
@@ -42,11 +40,9 @@
                     android:layout_alignParentStart="true"
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="55dp"
-                    android:text="Welcome Back"
+                    android:text="welcome back"
                     android:textSize="30sp"
-                    android:textStyle="bold"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginLeft="24dp" />
+                    android:textStyle="bold" />
             </RelativeLayout>
 
 
@@ -101,8 +97,8 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:minHeight="0dp"
-                        android:text="Forget Password?"
-                        android:textSize="10sp" />
+                        android:text="Forget Password"
+                        android:textSize="12sp" />
 
                     <Button
                         android:id="@+id/btLogIn"
@@ -112,7 +108,6 @@
                         android:layout_marginVertical="20dp"
                         android:layout_weight="1.5"
                         android:text="Login" />
-
                 </LinearLayout>
 
                 <Button
@@ -123,7 +118,18 @@
                     android:layout_gravity="end"
                     android:gravity="center"
                     android:minHeight="0dp"
-                    android:text="Don't have an account yet? Register Now!"
+                    android:text="Don\'t have an account yet? Register Now!"
+                    android:textSize="12sp" />
+
+                <Button
+                    android:id="@+id/btPhoneSingIn"
+                    style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:gravity="center"
+                    android:minHeight="0dp"
+                    android:text="Authenticate with phone number"
                     android:textSize="12sp" />
 
                 <TextView
@@ -133,10 +139,6 @@
                     android:gravity="center"
                     android:text="------------------ use other method ------------------" />
 
-                <TextView
-                    android:id="@+id/debugTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
             </LinearLayout>
 
             <RelativeLayout
@@ -150,7 +152,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="60dp"
-                    android:text="SingInWithFB" />
+                    android:text="SignInWithFB" />
 
                 <com.developer.gbuttons.GoogleSignInButton
                     android:id="@+id/btSignInGoogle"
@@ -161,8 +163,6 @@
             </RelativeLayout>
 
         </LinearLayout>
-
-
     </ScrollView>
 
 

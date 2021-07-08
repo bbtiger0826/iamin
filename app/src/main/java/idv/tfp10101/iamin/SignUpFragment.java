@@ -26,7 +26,7 @@ import static idv.tfp10101.iamin.member.MemberControl.memberRemoteAccess;
 import static idv.tfp10101.iamin.member.MemberControl.storeMemberIdSharedPreference;
 
 public class SignUpFragment extends Fragment {
-    private final static String TAG = "TAG_RegisterFragment";
+    private final static String TAG = "TAG_signup";
     private Activity activity;
     private FirebaseAuth auth;
     private EditText etEmail,etPassword,etNickname,etPhoneNumber;
@@ -37,8 +37,7 @@ public class SignUpFragment extends Fragment {
         super.onCreate(savedInstanceState);
         activity = getActivity();
         auth = FirebaseAuth.getInstance();
-        member = new Member();
-
+        member = Member.getInstance();
     }
 
     @Override
@@ -49,16 +48,14 @@ public class SignUpFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull  View view, @Nullable  Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         etEmail = view.findViewById(R.id.etRegisterEmail);
         etPassword = view.findViewById(R.id.etRegisterPassword);
         etNickname = view.findViewById(R.id.etRegisterNickname);
         etPhoneNumber = view.findViewById(R.id.etRegisterPhoneNumber);
 
-
-
-        //to RegisterFragment
+        //前往註冊頁面
         view.findViewById(R.id.btSignUp).setOnClickListener(v ->{
 
             String email = etEmail.getText().toString().trim();
@@ -84,9 +81,6 @@ public class SignUpFragment extends Fragment {
             member.setPassword(password);
             //firebase創帳號
             createAccount(member);
-
-            //移動到首頁
-            Navigation.findNavController(requireView()).navigate(R.id.action_signUpFragment_to_homeFragment);
         });
     }
 
@@ -96,18 +90,19 @@ public class SignUpFragment extends Fragment {
     }
 
     private void createAccount(Member member) {
-        Log.d(TAG, "createAccount:" + member.getEmail());
         auth.createUserWithEmailAndPassword(member.getEmail(), member.getPassword())
-                .addOnCompleteListener(activity, task -> {
+                .addOnCompleteListener(requireActivity(), task -> {
                     if (task.isSuccessful()) {
-
+                        Log.d(TAG, "createAccount:" + member.getEmail());
                         //mysql創帳號
                         member.setuUId(auth.getCurrentUser().getUid());
-                        String temp = memberRemoteAccess(activity , member, "signup");
-                        storeMemberIdSharedPreference(activity,temp);
-
+//                        Log.d(TAG,"Uid: " + auth.getCurrentUser().getUid());
+                        String mySqlMemberId = memberRemoteAccess(activity , member, "signup");
+                        storeMemberIdSharedPreference(activity,mySqlMemberId);
+                        member.setId(Integer.parseInt(mySqlMemberId));
+                        //移動到首頁
+                        Navigation.findNavController(requireView()).navigate(R.id.action_signUpFragment_to_memberCenterFragment);
                     } else {
-                        Log.d(TAG, "createUserWithEmail:failure", task.getException());
                         Toast.makeText(getContext(), "Authentication failed.", Toast.LENGTH_SHORT).show();
                     }
                 });

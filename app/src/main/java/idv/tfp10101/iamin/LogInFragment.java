@@ -2,6 +2,7 @@ package idv.tfp10101.iamin;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -17,7 +18,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -43,6 +43,7 @@ import java.util.Objects;
 
 import idv.tfp10101.iamin.member.Member;
 
+import static android.content.Context.MODE_PRIVATE;
 import static idv.tfp10101.iamin.member.MemberControl.memberRemoteAccess;
 import static idv.tfp10101.iamin.member.MemberControl.storeMemberIdSharedPreference;
 
@@ -54,9 +55,6 @@ public class LogInFragment extends Fragment {
     private CallbackManager callbackManager;
     private Member member;
     private EditText etEmail, etPassword;
-    private TextView textView;
-    private byte[] image;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,10 +62,19 @@ public class LogInFragment extends Fragment {
         super.onCreate(savedInstanceState);
         activity = getActivity();
         auth = FirebaseAuth.getInstance();
-        member = new Member();
-        fireBaseLogin();
-    }
+        member = Member.getInstance();
+        callbackManager = CallbackManager.Factory.create();
 
+        //用google登入firebase
+        GoogleSignInOptions options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                // 由google-services.json轉出
+                .requestIdToken(getString(R.string.default_web_client_id))
+                // 要求輸入email
+                .requestEmail()
+                .build();
+        client = GoogleSignIn.getClient(activity, options);
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -94,7 +101,11 @@ public class LogInFragment extends Fragment {
             firebaseLogIn(email, password);
             member.setEmail(email);
             member.setPassword(password);
-            memberRemoteAccess(activity, member, "login");
+            String mySqlMemberId = memberRemoteAccess(activity, member, "login");
+            storeMemberIdSharedPreference(activity,mySqlMemberId);
+            member.setId(Integer.parseInt(mySqlMemberId));
+            //這裡沒有navigation 因為在firebase那邊
+
         });
 
         //google登入
@@ -110,28 +121,33 @@ public class LogInFragment extends Fragment {
         });
 
         //註冊
-        view.findViewById(R.id.btToSignUp).setOnClickListener(v -> {
-            Navigation.findNavController(view).navigate(R.id.action_logInFragment_to_signUpFragment);
+        view.findViewById(R.id.btToSignUp).setOnClickListener(v ->
+                Navigation.findNavController(view).navigate(R.id.action_logInFragment_to_signUpFragment));
+
+        view.findViewById(R.id.btPhoneSingIn).setOnClickListener(v ->
+                Navigation.findNavController(view).navigate(R.id.action_logInFragment_to_phoneAuthFragment));
+
+        //忘記密碼 進入email fragment
+        view.findViewById(R.id.btForgetPassword).setOnClickListener(v -> {
+//            Navigation.findNavController(v).navigate(R.id.action_logInFragment_to_forgetPasswordFragment);
         });
-
-
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        LoginManager.getInstance().logOut();
-    }
 
-    private void fireBaseLogin() {
-        GoogleSignInOptions options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                // 由google-services.json轉出
-                .requestIdToken(getString(R.string.default_web_client_id))
-                // 要求輸入email
-                .requestEmail()
-                .build();
-        client = GoogleSignIn.getClient(activity, options);
-        callbackManager = CallbackManager.Factory.create();
+//        FirebaseUser currentUser = auth.getCurrentUser();
+//        if(currentUser != null){
+//            SharedPreferences pref = activity.getSharedPreferences("member_ID",
+//                    MODE_PRIVATE);
+//            int mySqlMemberId = pref.getInt("member_ID", -1);
+//            member = Member.getInstance();
+//            member.setId(mySqlMemberId);
+//            Log.d(TAG,mySqlMemberId +"member_ID");
+//            Navigation.findNavController(requireView())
+//                    .navigate(R.id.action_logInFragment_to_memberCenterFragment);
+//        }
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
@@ -139,9 +155,7 @@ public class LogInFragment extends Fragment {
 //        Log.d(TAG, "firebaseAuthWithGoogle: " + account.getId());
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         auth.signInWithCredential(credential)
-                //  監聽器
                 .addOnCompleteListener(activity, task -> {
-                    // 登入成功轉至下頁；失敗則顯示錯誤訊息
                     if (task.isSuccessful()) {
 
                         Toast.makeText(activity, "Goolge 登入成功", Toast.LENGTH_SHORT).show();
@@ -158,15 +172,17 @@ public class LogInFragment extends Fragment {
                         member.setuUId(auth.getCurrentUser().getUid());
 
                         //用singup 因為要在mysql新增帳號資訊
-                        String temp = memberRemoteAccess(activity,member, "signup");
-                        storeMemberIdSharedPreference(activity,temp);
+                        String mySqlMemberId = memberRemoteAccess(activity,member,"signup");
+                        //存到SharedPreference
+                        storeMemberIdSharedPreference(activity,mySqlMemberId);
+                        member.setId(Integer.parseInt(mySqlMemberId));
 
-                        Navigation.findNavController(getView())
-                                .navigate(R.id.action_logInFragment_to_homeFragment);
+                        Navigation.findNavController(requireView())
+                                .navigate(R.id.action_logInFragment_to_memberCenterFragment);
                     } else {
                         Exception exception = task.getException();
                         String message = exception == null ? "Sign in fail." : exception.getMessage();
-                        textView.setText(message);
+                        Log.d(TAG,"message: " + message);
                     }
                 });
     }
@@ -185,7 +201,6 @@ public class LogInFragment extends Fragment {
                         Log.e(TAG, "GoogleSignInAccount is null");
                     }
                 } catch (ApiException e) {
-                    // Google Sign In failed, update UI appropriately
                     Log.e(TAG, "Google sign in failed");
                 }
             }
@@ -197,7 +212,7 @@ public class LogInFragment extends Fragment {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.d(TAG, "facebook:onSuccess:" + loginResult);
-                handleFacebookAccessToken(loginResult.getAccessToken());
+                handleFaceBookCredential(loginResult.getAccessToken());
             }
 
             @Override
@@ -215,51 +230,61 @@ public class LogInFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Pass the activity result back to the Facebook SDK
+        Log.d(TAG,"requestCode: " + requestCode);
+        Log.d(TAG,"resultCode: " + resultCode);
+        Log.d(TAG,"data: " + data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void handleFacebookAccessToken(AccessToken token) {
-        Log.d(TAG, "signInFirebase: " + token);
+    private void handleFaceBookCredential(AccessToken token) {
+//        Log.d(TAG, "signInFirebase: " + token);
 
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         auth.signInWithCredential(credential)
                 .addOnCompleteListener(activity, task -> {
                     // 登入成功轉至下頁；失敗則顯示錯誤訊息
                     if (task.isSuccessful()) {
-                        Navigation.findNavController(getView())
-                                .navigate(R.id.action_logInFragment_to_homeFragment);
+
+                        member.setPassword("FB_Login");
+                        member.setuUId(auth.getCurrentUser().getUid());
+                        Log.d(TAG,"Email: " + auth.getCurrentUser().getEmail());
+
+                        String mySqlMemberId = memberRemoteAccess(activity,member,"signup");
+                        member.setEmail("User" + mySqlMemberId + "@Facebook.com");
+                        storeMemberIdSharedPreference(activity,mySqlMemberId);
+
+
+                        Navigation.findNavController(requireView())
+                                .navigate(R.id.action_logInFragment_to_memberCenterFragment);
                     } else {
-                        String error = task.getException().toString();
-                        Toast.makeText(activity, error + "<-----------facebook login", Toast.LENGTH_SHORT).show();
-                        Log.d(TAG, error);
-                        TextView debug = getView().findViewById(R.id.debugTv);
-                        debug.setText(error);
+                        Exception exception = task.getException();
+                        String message = exception == null ? "Sign in fail." : exception.getMessage();
+                        Log.e(TAG, message);
                     }
                 });
     }
 
+
+    //Firebase登入
     private void firebaseLogIn(String email, String password) {
-        Log.d(TAG, "signIn:" + email);
+        Log.d(TAG, "Login:" + email);
         if (email.trim().isEmpty() || password.trim().isEmpty()) {
             Toast.makeText(activity, "Email/Password can't not be empty", Toast.LENGTH_SHORT).show();
             return;
         }
-        //firebse login
         auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(requireActivity(), task -> {
                     if (task.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithEmail:success");
-                        FirebaseUser user = auth.getCurrentUser();
                         Navigation.findNavController(etEmail)
-                                .navigate(R.id.action_logInFragment_to_homeFragment);
+                                .navigate(R.id.action_logInFragment_to_memberCenterFragment);
                     } else {
-                        // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithEmail:failure", task.getException());
                         Toast.makeText(getContext(), "Authentication failed.",
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
     }
+
 }

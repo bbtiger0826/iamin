@@ -1,6 +1,7 @@
 package idv.tfp10101.iamin.network;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
@@ -8,6 +9,9 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.util.Log;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 
 import idv.tfp10101.iamin.Constants;
@@ -18,9 +22,9 @@ import idv.tfp10101.iamin.Constants;
  */
 public class RemoteAccess {
     // 根網址
-    //public static String URL_SERVER = "http://10.0.2.2:8080/iamin_JavaServlet/";
+    public static String URL_SERVER = "http://10.0.2.2:8080/iamin_JavaServlet/";
     //實機測試
-    public static String URL_SERVER = "http://192.168.1.102:8080/iamin_JavaServlet/";
+//    public static String URL_SERVER = "http://192.168.1.102:8080/iamin_JavaServlet/";
     //  test
     /**
      * (Json)抓取server資料
@@ -48,12 +52,40 @@ public class RemoteAccess {
     /**
      * (Images)抓取server資料
      * @param url
-     * @param requst
+//     * @param requst
      * @return
      */
 //    public static List<byte[]> getRemoteImages(String url, String requst) {
 //
 //    }
+
+    // 適用取得一張圖
+    public static Bitmap getRemoteImage(String url, String outStr) {
+        ImageCallable callable = new ImageCallable(url, outStr);
+        FutureTask<Bitmap> task = new FutureTask<>(callable);
+        Thread thread = new Thread(task);
+        thread.start();
+        try {
+            return task.get();
+        } catch (Exception e) {
+            task.cancel(true);
+            return null;
+        }
+    }
+    // 搭配Executor取圖 thread pool
+    public static Bitmap getRemoteImage(String url, String outStr, ExecutorService executor) {
+
+        ImageCallable callable = new ImageCallable(url, outStr);
+        //每一個提交都會產生一個future
+        Future<Bitmap> future = executor.submit(callable);
+        Bitmap bitmap = null;
+        try {
+            bitmap = future.get();
+        } catch (ExecutionException | InterruptedException e) {
+            future.cancel(true);
+        }
+        return bitmap;
+    }
 
     /**
      * 檢查是否有網路連線
