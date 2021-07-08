@@ -121,8 +121,8 @@ public class ChatFragment extends Fragment {
 
     private void showAllSellers() {
         FirebaseUser firebaseUser = auth.getCurrentUser();
-        // .whereNotEqualTo("email", user.getEmail())
-        db.collection("Members").whereEqualTo("phoneNumber", firebaseUser.getPhoneNumber()).get().addOnCompleteListener(task -> {
+        // .whereEqualTo("phoneNumber", firebaseUser.getPhoneNumber())
+        db.collection("Members").get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null) {
                 members.clear();
                 for (QueryDocumentSnapshot document : task.getResult()) {
@@ -231,8 +231,8 @@ public class ChatFragment extends Fragment {
     private void listenToSellers() {
         FirebaseUser fUser = auth.getCurrentUser();
         if (registration == null) {
-            // .whereNotEqualTo("email", fUser.getEmail())
-            registration = db.collection("Members").whereEqualTo("phoneNumber", fUser.getPhoneNumber())
+            // .whereEqualTo("phoneNumber", fUser.getPhoneNumber())
+            registration = db.collection("Members")
                     .addSnapshotListener((snapshots, e) -> {
                 Log.d(TAG, "event happened");
                 if (e == null) {

@@ -296,7 +296,7 @@ public class HomeFragment extends Fragment {
 
                 Bundle bundle = new Bundle();
                 bundle.putInt("GroupID",GroupID);
-                Navigation.findNavController(v).navigate(R.id.merchbrowseFragment,bundle);
+//                Navigation.findNavController(v).navigate(R.id.merchbrowseFragment,bundle);
             });
         }
 
